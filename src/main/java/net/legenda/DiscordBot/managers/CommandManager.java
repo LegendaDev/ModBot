@@ -49,11 +49,12 @@ public class CommandManager {
     }
 
     private void initCommands() {
-        commands.put("Ban", new BanCommand());
-        commands.put("Clean", new Clean());
-        commands.put("Kick", new KickCommand());
-        commands.put("Help", new Help());
-        commands.put("Ping", new Ping());
+        commands.put("BanCommand", new BanCommand());
+        commands.put("CleanCommand", new CleanCommand());
+        commands.put("KickCommand", new KickCommand());
+        commands.put("HelpCommand", new HelpCommand());
+        commands.put("PingCommand", new PingCommand());
+        commands.put("RollCommand", new RollCommand());
 
     }
 

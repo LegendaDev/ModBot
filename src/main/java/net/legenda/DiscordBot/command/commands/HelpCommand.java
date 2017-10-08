@@ -4,8 +4,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.managers.CommandManager;
 
-@Command.CmdInfo(name = "Help", description = "A help command")
-public class Help extends Command{
+@Command.cmdInfo(name = "Help", description = "A help command")
+public class HelpCommand extends Command{
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {

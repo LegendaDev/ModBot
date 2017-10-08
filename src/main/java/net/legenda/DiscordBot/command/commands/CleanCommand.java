@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Command.CmdInfo(name = "Clean", description = "Removes messages from textChannel", type = Command.Type.Admin, permission = Permission.MESSAGE_MANAGE)
-public class Clean extends Command {
+@Command.cmdInfo(name = "Clean", description = "Removes messages from textChannel", type = Command.Type.Admin, permission = Permission.MESSAGE_MANAGE)
+public class CleanCommand extends Command {
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
@@ -22,7 +22,7 @@ public class Clean extends Command {
         String selected = "all";
         Stream<Message> history = event.getChannel().getIterableHistory().complete().stream().filter(message -> !message.equals(event.getMessage()));
         if (args.length <= 0)
-            throw new InvalidCommandArgumentException("Please enter an amount of messages to clear (1-100)");
+            throw new InvalidCommandArgumentException("Usage: .CleanCommand <Amount> <all/commands/@User>*");
 
         amount = Integer.parseInt(args[0]);
         if (amount > 100 || amount < 1)
@@ -39,7 +39,7 @@ public class Clean extends Command {
             if (selected.startsWith("@")) {
                 toDelete = history.filter(message -> message.getAuthor().equals(event.getMessage().getMentionedUsers().get(0))).limit(amount).collect(Collectors.toList());
             } else
-                throw new InvalidCommandArgumentException("Usage: .Clean <Amount> <all/commands/@User>*");
+                throw new InvalidCommandArgumentException("Usage: .CleanCommand <Amount> <all/commands/@User>*");
             if (toDelete.isEmpty()) {
                 throw new InvalidCommandStateException("That user has not posted any messages in that channel");
             }
@@ -47,10 +47,11 @@ public class Clean extends Command {
 
         if (toDelete.isEmpty())
             throw new InvalidCommandStateException("The message query returned no messages to delete");
-        else if (toDelete.size() <= 1) {
+        else if (toDelete.size() <= 1)
             event.getChannel().deleteMessageById(toDelete.get(0).getId()).queue();
-        }
-        event.getTextChannel().deleteMessages(toDelete).queue();
+        else
+            event.getTextChannel().deleteMessages(toDelete).queue();
+
         event.getChannel().deleteMessageById(event.getMessageId()).queueAfter(3L, TimeUnit.SECONDS);
         sendEmbedMessage(":recycle: Messages cleaned", event.getTextChannel(), true);
 

@@ -9,7 +9,7 @@ import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 
 import java.util.Arrays;
 
-@Command.CmdInfo(name = "Ban", description = "Bans a user from the server", type = Command.Type.Admin, permission = Permission.BAN_MEMBERS)
+@Command.cmdInfo(name = "Ban", description = "Bans a user from the server", type = Command.Type.Admin, permission = Permission.BAN_MEMBERS)
 public class BanCommand extends Command {
 
     @Override

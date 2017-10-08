@@ -12,11 +12,11 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class Command {
 
-    private String name = getClass().getAnnotation(CmdInfo.class).name();
-    private String description = getClass().getAnnotation(CmdInfo.class).description();
-    private Type type = getClass().getAnnotation(CmdInfo.class).type();
-    private String role = getClass().getAnnotation(CmdInfo.class).role();
-    private Permission perm = getClass().getAnnotation(CmdInfo.class).permission();
+    private String name = getClass().getAnnotation(cmdInfo.class).name();
+    private String description = getClass().getAnnotation(cmdInfo.class).description();
+    private Type type = getClass().getAnnotation(cmdInfo.class).type();
+    private String role = getClass().getAnnotation(cmdInfo.class).role();
+    private Permission perm = getClass().getAnnotation(cmdInfo.class).permission();
 
     /**
      * @param args  = The given arguments of the command
@@ -29,7 +29,7 @@ public abstract class Command {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface CmdInfo {
+    public @interface cmdInfo {
         String name();
 
         String description();

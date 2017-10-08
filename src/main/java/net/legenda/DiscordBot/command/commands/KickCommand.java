@@ -10,7 +10,7 @@ import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 
 import java.util.Arrays;
 
-@Command.CmdInfo(name = "Kick", description = "Kicks a user from the server", type = Command.Type.Admin, permission = Permission.KICK_MEMBERS)
+@Command.cmdInfo(name = "Kick", description = "Kicks a user from the server", type = Command.Type.Admin, permission = Permission.KICK_MEMBERS)
 public class KickCommand extends Command {
 
     @Override
