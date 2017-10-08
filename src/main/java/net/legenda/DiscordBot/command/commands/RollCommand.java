@@ -11,7 +11,8 @@ public class RollCommand extends Command {
         int sides = 6;
         if(args.length > 1)
             sides = Integer.parseInt(args[1]);
-        int output = (int) Math.round((Math.random() * (sides - 1) + 1) * 10);
+        int output = (int) Math.round(Math.random() * (sides - 1) + 1);
+        sendEmbedMessage("Rolled a " + output + " (" + sides + ")", event.getChannel(), false);
     }
 
 }
