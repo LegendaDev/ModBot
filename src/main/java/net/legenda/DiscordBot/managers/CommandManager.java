@@ -56,6 +56,7 @@ public class CommandManager {
         commands.put("HelpCommand", new HelpCommand());
         commands.put("PingCommand", new PingCommand());
         commands.put("RollCommand", new RollCommand());
+        commands.put("UnbanCommand", new UnbanCommand());
 
     }
 
