@@ -51,6 +51,7 @@ public class CommandManager {
     private void initCommands() {
         commands.put("BanCommand", new BanCommand());
         commands.put("CleanCommand", new CleanCommand());
+        commands.put("DeveloperCommand", new DevelopersCommand());
         commands.put("KickCommand", new KickCommand());
         commands.put("HelpCommand", new HelpCommand());
         commands.put("PingCommand", new PingCommand());
