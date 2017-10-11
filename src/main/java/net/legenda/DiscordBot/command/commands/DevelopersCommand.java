@@ -18,7 +18,7 @@ public class DevelopersCommand extends Command {
                 "He or she writes, debugs and executes the source code of a software application. " + onlineDevs, event.getChannel(), false);
     }
 
-    public String getOnlineDevs(Guild guild) {
+    private String getOnlineDevs(Guild guild) {
         List<Member> members = guild.getMembers();
         StringBuilder builder = new StringBuilder();
         for (Member member : members) {
