@@ -63,11 +63,10 @@ public abstract class Command {
     }
 
     protected static void sendEmbedMessage(String msg, MessageChannel channel, boolean delete) {
-        channel.sendMessage(Main.INSTANCE.msgUtil.wrapMessage(msg)).queue();
-        Message message = Main.INSTANCE.msgUtil.getMessage(msg, channel);
-        if (delete && message != null) {
-            channel.deleteMessageById(message.getId()).queueAfter(3l, TimeUnit.SECONDS);
-        }
+        channel.sendMessage(Main.INSTANCE.msgUtil.wrapMessage(msg)).queue(sent -> {
+            if(delete)
+                sent.delete().queueAfter(3l, TimeUnit.SECONDS);
+        });
     }
 
     public static void sendErrorMessage(String msg, MessageChannel channel) {
