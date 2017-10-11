@@ -34,14 +34,4 @@ public class MessageUtils {
         return eb.build();
     }
 
-    public  Message getMessage(String content, MessageChannel channel) {
-        for (Message msg : channel.getIterableHistory().limit(20)) {
-            if (msg.getAuthor().isBot())
-                return  msg.getEmbeds().stream().filter(embed -> embed.getDescription().equalsIgnoreCase(content)) != null ? msg : null;
-            else
-                return msg.getContent().equalsIgnoreCase(msg.getContent()) ? msg : null;
-        }
-        return null;
-    }
-
 }
