@@ -1,9 +1,10 @@
-package net.legenda.DiscordBot.command.commands;
+package net.legenda.DiscordBot.command.commands.Admin;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.managers.GuildController;
+import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 
@@ -12,11 +13,11 @@ public class UnbanCommand extends Command {
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
-        if (args.length <= 1) {
-            throw new InvalidCommandArgumentException("Usage: .Unban <@User>");
+        if (args.length == 0) {
+            throw new InvalidCommandArgumentException("Usage: .Unban <UserID>");
         }
         GuildController guildController = new GuildController(event.getGuild());
-        User toUnban = event.getMessage().getMentionedUsers().size() > 0 ? event.getMessage().getMentionedUsers().get(0) : null;
+        User toUnban = Main.jdaBot.getUserById(args[0]);
         if (toUnban != null) {
             guildController.unban(toUnban).queue();
             sendEmbedMessage("Unbanned user: " + toUnban.getAsMention(), event.getChannel(), false);
