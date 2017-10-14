@@ -1,4 +1,4 @@
-package net.legenda.DiscordBot.command.commands;
+package net.legenda.DiscordBot.command.commands.Admin;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
@@ -15,24 +15,22 @@ public class BanCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         String reason = "";
-        int days = 0;
         String[] arguments = event.getMessage().getRawContent().replaceAll("<@.*?>", "").split(" ");
 
         if (arguments.length <= 1) {
-            throw new InvalidCommandArgumentException("Usage: .Ban <@User> <Del Msgs (Days)> <Reason>*");
+            throw new InvalidCommandArgumentException("Usage: .Ban <@User> <Reason>*");
         }
+        System.out.println(arguments[1]);
         if (args.length > 1)
-            days = Integer.parseInt(arguments[1]);
-        if (args.length > 2)
-            reason = String.join(" ", Arrays.copyOfRange(arguments, 2, arguments.length));
+            reason = String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length));
 
         GuildController guildController = new GuildController(event.getGuild());
         User toBan = event.getMessage().getMentionedUsers().size() > 0 ? event.getMessage().getMentionedUsers().get(0) : null;
         if (toBan != null) {
             if (!reason.isEmpty())
-                guildController.ban(toBan, days, reason).queue();
+                guildController.ban(toBan, 0, reason).queue();
             else
-                guildController.ban(toBan, days).queue();
+                guildController.ban(toBan, 0).queue();
             sendEmbedMessage("Banned user: " + toBan.getAsMention(), event.getChannel(), false);
 
         } else
