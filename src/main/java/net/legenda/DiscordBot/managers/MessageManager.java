@@ -15,7 +15,7 @@ public class MessageManager extends ListenerAdapter {
         try {
             CommandManager.execute(event);
         } catch (InvalidCommandArgumentException |InvalidCommandStateException|IllegalCommandAccessException|InvalidCommandException e) {
-            Command.sendErrorMessage(e.getLocalizedMessage(), event.getTextChannel());
+            Command.sendErrorMessage(e.getLocalizedMessage(), event.getTextChannel(), false);
         }
     }
 }
