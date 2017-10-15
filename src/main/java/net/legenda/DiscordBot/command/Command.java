@@ -1,7 +1,6 @@
 package net.legenda.DiscordBot.command;
 
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.legenda.DiscordBot.Main;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
