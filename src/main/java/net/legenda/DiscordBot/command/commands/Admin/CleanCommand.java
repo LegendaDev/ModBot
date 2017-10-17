@@ -53,7 +53,7 @@ public class CleanCommand extends Command {
             event.getTextChannel().deleteMessages(toDelete).queue();
 
         event.getChannel().deleteMessageById(event.getMessageId()).queueAfter(3L, TimeUnit.SECONDS);
-        sendEmbedMessage(":recycle:" + amount + "Messages cleaned", event.getTextChannel(), true);
+        sendEmbedMessage(":recycle:" + amount + " Messages Cleaned", event.getTextChannel(), true);
 
     }
 
