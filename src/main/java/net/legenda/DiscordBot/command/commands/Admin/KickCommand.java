@@ -24,7 +24,7 @@ public class KickCommand extends Command {
         reason = String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length));
 
         GuildController guildController = new GuildController(event.getGuild());
-        User user = event.getMessage().getMentionedUsers().size() > 0 ? event.getMessage().getMentionedUsers().get(0) : null;
+        User user = event.getMessage().getMentionedUsers().stream().findFirst().orElse(null);
         Member toKick = event.getGuild().getMember(user);
         if (toKick != null) {
             if (reason != null)
