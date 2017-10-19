@@ -20,12 +20,11 @@ public class BanCommand extends Command {
         if (arguments.length <= 1) {
             throw new InvalidCommandArgumentException("Usage: .Ban <@User> <Reason>*");
         }
-        System.out.println(arguments[1]);
         if (args.length > 1)
             reason = String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length));
 
         GuildController guildController = new GuildController(event.getGuild());
-        User toBan = event.getMessage().getMentionedUsers().size() > 0 ? event.getMessage().getMentionedUsers().get(0) : null;
+        User toBan = event.getMessage().getMentionedUsers().stream().findFirst().orElse(null);
         if (toBan != null) {
             if (!reason.isEmpty())
                 guildController.ban(toBan, 0, reason).queue();
