@@ -7,6 +7,11 @@ import net.legenda.DiscordBot.command.commands.*;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.utils.PermissionUtil;
+import net.legenda.DiscordBot.command.commands.admin.BanCommand;
+import net.legenda.DiscordBot.command.commands.admin.CleanCommand;
+import net.legenda.DiscordBot.command.commands.admin.KickCommand;
+import net.legenda.DiscordBot.command.commands.admin.UnbanCommand;
+import net.legenda.DiscordBot.command.commands.music.*;
 import net.legenda.DiscordBot.exceptions.IllegalCommandAccessException;
 import net.legenda.DiscordBot.exceptions.InvalidCommandException;
 
@@ -57,6 +62,13 @@ public class CommandManager {
         commands.put("PingCommand", new PingCommand());
         commands.put("RollCommand", new RollCommand());
         commands.put("UnbanCommand", new UnbanCommand());
+        commands.put("Play", new PlayCommand());
+        commands.put("QueueCommand", new QueueCommand());
+        commands.put("LeaveCommand", new LeaveCommand());
+        commands.put("SkipCommand", new SkipCommand());
+        commands.put("SeekCommand", new SeekCommand());
+        commands.put("StopCommand", new StopCommand());
+        commands.put("ResumeCommand", new ResumeCommand());
 
     }
 
