@@ -1,7 +1,7 @@
 package net.legenda.DiscordBot.command;
 
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.legenda.DiscordBot.Main;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -17,6 +17,7 @@ public abstract class Command {
     private String role = getClass().getAnnotation(cmdInfo.class).role();
     private Permission perm = getClass().getAnnotation(cmdInfo.class).permission();
 
+
     /**
      * @param args  = The given arguments of the command
      * @param event = The MessageEvent
@@ -24,7 +25,7 @@ public abstract class Command {
     public abstract void execute(String[] args, MessageReceivedEvent event);
 
     public enum Type {
-        Admin, Fun, Misc
+        Admin, Music, Fun, Misc
     }
 
     @Retention(RetentionPolicy.RUNTIME)
@@ -61,18 +62,23 @@ public abstract class Command {
         return this.type;
     }
 
-    protected static void sendEmbedMessage(String msg, MessageChannel channel, boolean delete) {
+    protected static void sendMessage(String msg, TextChannel channel){
+        channel.sendMessage(msg).queue();
+    }
+
+    protected static void sendEmbedMessage(String msg, TextChannel channel, boolean delete) {
         channel.sendMessage(Main.INSTANCE.msgUtil.wrapMessage(msg)).queue(sent -> {
             if (delete)
                 sent.delete().queueAfter(3l, TimeUnit.SECONDS);
         });
     }
 
-    public static void sendErrorMessage(String msg, MessageChannel channel, boolean delete) {
+    public static void sendErrorMessage(String msg, TextChannel channel, boolean delete) {
         channel.sendMessage(Main.INSTANCE.msgUtil.wrapErrorMessage(msg)).queue(sent -> {
             if (delete)
                 sent.delete().queueAfter(3l, TimeUnit.SECONDS);
         });
     }
+
 
 }
