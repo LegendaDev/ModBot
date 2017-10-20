@@ -25,7 +25,6 @@ public class PlayCommand extends Command {
 
         Main.INSTANCE.musicUtils.newTrack(input, event.getMember(), event.getMessage());
 
-
     }
 
 }
