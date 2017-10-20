@@ -5,7 +5,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
-@Command.cmdInfo(name = "Clear", description = "Clears the current queue", type = Command.Type.Music, alias = {"connect"})
+@Command.cmdInfo(name = "Join", description = "Joins the user's voice channel", type = Command.Type.Music, alias = {"connect"})
 public class JoinCommand extends Command {
 
     @Override
