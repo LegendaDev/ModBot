@@ -12,7 +12,7 @@ public class RollCommand extends Command {
         if(args.length >= 1)
             sides = Integer.parseInt(args[0]);
         int output = (int) Math.round(Math.random() * (sides - 1) + 1);
-        sendEmbedMessage("Rolled a " + output + " (" + sides + ")", event.getChannel(), false);
+        sendEmbedMessage("Rolled a " + output + " (" + sides + ")", event.getTextChannel(), false);
     }
 
 }
