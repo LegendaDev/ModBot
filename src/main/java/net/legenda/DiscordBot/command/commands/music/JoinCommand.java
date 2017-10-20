@@ -11,8 +11,9 @@ public class JoinCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         VoiceChannel channel = event.getMember().getVoiceState().getChannel();
-        if(channel == null)
+        if (channel == null)
             throw new InvalidCommandStateException("You must be in a VoiceChannel to summon the bot");
         event.getGuild().getAudioManager().openAudioConnection(channel);
+        sendMessage(":arrow_down: Joined:", event.getTextChannel());
     }
 }
