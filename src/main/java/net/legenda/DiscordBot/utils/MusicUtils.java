@@ -108,7 +108,7 @@ public class MusicUtils {
     }
 
     public void pause(Guild guild){
-        getAudioPlayer(guild).setPaused(false);
+        getAudioPlayer(guild).setPaused(true);
     }
 
     public void unPause(Guild guild){
