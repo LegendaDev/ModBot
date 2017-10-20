@@ -10,6 +10,6 @@ public class ClearCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         Main.INSTANCE.musicUtils.clear(event.getGuild());
-        sendEmbedMessage(":arrows_counterclockwise: Cleared Queue:", event.getTextChannel(), false);
+        sendMessage(":arrows_counterclockwise: Cleared Queue:", event.getTextChannel());
     }
 }
