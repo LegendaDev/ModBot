@@ -16,6 +16,7 @@ public abstract class Command {
     private Type type = getClass().getAnnotation(cmdInfo.class).type();
     private String role = getClass().getAnnotation(cmdInfo.class).role();
     private Permission perm = getClass().getAnnotation(cmdInfo.class).permission();
+    private String[] alias = getClass().getAnnotation(cmdInfo.class).alias();
 
 
     /**
@@ -40,6 +41,8 @@ public abstract class Command {
 
         Permission permission() default Permission.UNKNOWN;
 
+        String[] alias() default "";
+
     }
 
     public String getName() {
@@ -60,6 +63,10 @@ public abstract class Command {
 
     public Type getType() {
         return this.type;
+    }
+
+    public String[] getAlias(){
+        return this.alias;
     }
 
     protected static void sendMessage(String msg, TextChannel channel){

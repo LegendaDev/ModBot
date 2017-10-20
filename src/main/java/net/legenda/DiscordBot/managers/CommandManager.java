@@ -35,7 +35,7 @@ public class CommandManager {
             String message = msg.getContent().substring(1);
             String[] args = message.split(" ");
             for (Command cmd : commands.values()) {
-                if (cmd.getName().equalsIgnoreCase(args[0])) {
+                if (cmd.getName().equalsIgnoreCase(args[0]) || Arrays.stream(cmd.getAlias()).anyMatch(alias -> alias.equalsIgnoreCase(args[0]))) {
                     if (hasPermission(cmd, guild, channel, user)) {
                         if (hasRole(cmd, guild, user)) {
                             String[] arguments = Arrays.copyOfRange(args, 1, args.length);
@@ -62,7 +62,7 @@ public class CommandManager {
         commands.put("PingCommand", new PingCommand());
         commands.put("RollCommand", new RollCommand());
         commands.put("UnbanCommand", new UnbanCommand());
-        commands.put("Play", new PlayCommand());
+        commands.put("PlayCommand", new PlayCommand());
         commands.put("QueueCommand", new QueueCommand());
         commands.put("LeaveCommand", new LeaveCommand());
         commands.put("SkipCommand", new SkipCommand());
