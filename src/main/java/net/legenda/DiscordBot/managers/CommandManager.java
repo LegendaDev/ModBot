@@ -74,6 +74,7 @@ public class CommandManager {
         commands.put("JoinCommand", new JoinCommand());
         commands.put("QueueCommand", new QueueCommand());
         commands.put("LeaveCommand", new LeaveCommand());
+        commands.put("NowPlayingCommand", new NowPlayingCommand());
         commands.put("SeekCommand", new SeekCommand());
         commands.put("SkipCommand", new SkipCommand());
         commands.put("ShuffleCommand", new ShuffleCommand());
