@@ -21,7 +21,7 @@ public class LeaveCommand extends Command {
                 track.clearQueue();
             }
             manager.closeAudioConnection();
-            sendMessage("Left channel", event.getTextChannel());
+            sendMessage(":arrow_up: Left channel", event.getTextChannel());
         }
     }
 }
