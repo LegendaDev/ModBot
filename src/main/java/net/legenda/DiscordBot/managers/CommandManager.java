@@ -71,6 +71,7 @@ public class CommandManager {
         //Music
         commands.put("ClearCommand", new ClearCommand());
         commands.put("PlayCommand", new PlayCommand());
+        commands.put("JoinCommand", new JoinCommand());
         commands.put("QueueCommand", new QueueCommand());
         commands.put("LeaveCommand", new LeaveCommand());
         commands.put("SeekCommand", new SeekCommand());
