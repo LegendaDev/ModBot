@@ -6,9 +6,11 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 import net.legenda.DiscordBot.utils.MessageUtils;
 
@@ -63,12 +65,20 @@ public class TrackManager extends AudioEventAdapter {
         AudioTrackInfo info = queue.element();
         VoiceChannel channel = info.getAuthor().getVoiceState().getChannel();
         VoiceChannel connected = info.getAuthor().getGuild().getAudioManager().getConnectedChannel();
-        if (connected != null || info.getAuthor().getGuild().getAudioManager().isAttemptingToConnect()){
+        Guild guild = info.getAuthor().getGuild();
+        if (connected != null || guild.getAudioManager().isAttemptingToConnect()){
             channel = connected;
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.setAuthor(":musical_note: Now Playing", info.getTrack().getInfo().uri, info.getAuthor().getUser().getAvatarUrl());
+            builder.setDescription("`" + info.getTrack().getInfo().title + "` By `" + info.getTrack().getInfo().author);
+            builder.addField("Length: " , Main.INSTANCE.musicUtils.getFormattedLength(track.getInfo().length), true);
+            builder.addField("UpNext:", Main.INSTANCE.musicUtils.getTrackManager(guild).getQueue().stream().filter(audio -> !audio.getTrack().equals(track)).findFirst().orElse(null).getTrack().getInfo().title, true);
+            builder.addField("Requested By:", info.getAuthor().getEffectiveName(), true);
+            info.getChannel().sendMessage(builder.build()).queue();
         } else if(channel == null){
             throw new InvalidCommandStateException("You must be in a VoiceChannel to summon the bot");
         }
-        info.getAuthor().getGuild().getAudioManager().openAudioConnection(channel);
+        guild.getAudioManager().openAudioConnection(channel);
 
     }
 
