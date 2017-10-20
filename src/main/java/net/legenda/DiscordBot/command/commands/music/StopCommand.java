@@ -10,6 +10,6 @@ public class StopCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         Main.INSTANCE.musicUtils.pause(event.getGuild());
-        sendEmbedMessage(":pause_button: Paused:", event.getTextChannel(), false);
+        sendMessage(":pause_button: Paused:", event.getTextChannel());
     }
 }
