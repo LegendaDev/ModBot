@@ -15,7 +15,7 @@ public class DevelopersCommand extends Command {
     public void execute(String[] args, MessageReceivedEvent event) {
         String onlineDevs = !getOnlineDevs(event.getGuild()).isEmpty() ? "\n*Online Devs include:*\n" + getOnlineDevs(event.getGuild()) : "";
         sendEmbedMessage("A developer is an individual that builds and create software and applications. " +
-                "He or she writes, debugs and executes the source code of a software application. " + onlineDevs, event.getChannel(), false);
+                "He or she writes, debugs and executes the source code of a software application. " + onlineDevs, event.getTextChannel(), false);
     }
 
     private String getOnlineDevs(Guild guild) {
