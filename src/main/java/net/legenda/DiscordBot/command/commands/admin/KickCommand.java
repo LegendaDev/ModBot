@@ -1,4 +1,4 @@
-package net.legenda.DiscordBot.command.commands.Admin;
+package net.legenda.DiscordBot.command.commands.admin;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
@@ -31,7 +31,7 @@ public class KickCommand extends Command {
                 guildController.kick(toKick, reason).queue();
             else
                 guildController.kick(toKick).queue();
-            sendEmbedMessage("Kicked user: " + toKick.getAsMention(), event.getChannel(), false);
+            sendEmbedMessage("Kicked user: " + toKick.getAsMention(), event.getTextChannel(), false);
 
         } else {
             throw new InvalidCommandArgumentException("Could not find User");

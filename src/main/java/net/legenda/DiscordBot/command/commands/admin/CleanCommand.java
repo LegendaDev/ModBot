@@ -1,4 +1,4 @@
-package net.legenda.DiscordBot.command.commands.Admin;
+package net.legenda.DiscordBot.command.commands.admin;
 
 import net.dv8tion.jda.core.Permission;
 import net.legenda.DiscordBot.Main;

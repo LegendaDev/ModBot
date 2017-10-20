@@ -1,4 +1,4 @@
-package net.legenda.DiscordBot.command.commands.Admin;
+package net.legenda.DiscordBot.command.commands.admin;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
@@ -17,10 +17,15 @@ public class UnbanCommand extends Command {
             throw new InvalidCommandArgumentException("Usage: .Unban <UserID>");
         }
         GuildController guildController = new GuildController(event.getGuild());
-        User toUnban = Main.jdaBot.getUserById(args[0]);
+        User toUnban = null;
+        try{
+            toUnban = Main.jdaBot.getUserById(args[0]);
+        }catch(Exception e){
+
+        }
         if (toUnban != null) {
             guildController.unban(toUnban).queue();
-            sendEmbedMessage("Unbanned user: " + toUnban.getAsMention(), event.getChannel(), false);
+            sendEmbedMessage("Unbanned user: " + toUnban.getAsMention(), event.getTextChannel(), false);
         } else
             throw new InvalidCommandArgumentException("Could not find User");
 

@@ -1,4 +1,4 @@
-package net.legenda.DiscordBot.command.commands.Admin;
+package net.legenda.DiscordBot.command.commands.admin;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
@@ -30,7 +30,7 @@ public class BanCommand extends Command {
                 guildController.ban(toBan, 0, reason).queue();
             else
                 guildController.ban(toBan, 0).queue();
-            sendEmbedMessage("Banned user: " + toBan.getAsMention(), event.getChannel(), false);
+            sendEmbedMessage("Banned user: " + toBan.getAsMention(), event.getTextChannel(), false);
 
         } else
             throw new InvalidCommandArgumentException("Could not find User");

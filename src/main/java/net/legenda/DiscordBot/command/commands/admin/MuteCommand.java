@@ -1,4 +1,4 @@
-package net.legenda.DiscordBot.command.commands.Admin;
+package net.legenda.DiscordBot.command.commands.admin;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
@@ -15,7 +15,7 @@ public class MuteCommand extends Command {
             throw new InvalidCommandArgumentException("Usage: .Mute <@User>");
         User toMute = event.getMessage().getMentionedUsers().size() > 0 ? event.getMessage().getMentionedUsers().get(0) : null;
         if (toMute != null) {
-            sendEmbedMessage("Muted user " + toMute.getAsMention(), event.getChannel(), false);
+            sendEmbedMessage("Muted user " + toMute.getAsMention(), event.getTextChannel(), false);
         } else
             throw new InvalidCommandArgumentException("Could not find User");
     }
