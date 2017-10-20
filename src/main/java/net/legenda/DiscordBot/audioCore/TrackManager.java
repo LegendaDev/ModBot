@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 import net.legenda.DiscordBot.utils.MessageUtils;
 
 import java.awt.*;
@@ -64,6 +65,8 @@ public class TrackManager extends AudioEventAdapter {
         VoiceChannel connected = info.getAuthor().getGuild().getAudioManager().getConnectedChannel();
         if (connected != null || info.getAuthor().getGuild().getAudioManager().isAttemptingToConnect()){
             channel = connected;
+        } else if(channel == null){
+            throw new InvalidCommandStateException("You must be in a VoiceChannel to summon the bot");
         }
         info.getAuthor().getGuild().getAudioManager().openAudioConnection(channel);
 
