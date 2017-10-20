@@ -24,7 +24,6 @@ public class SeekCommand extends Command {
         if (m.find()){
             String minutes = arg.split(":")[0];
             String seconds = arg.split(":")[1];
-            System.out.println(minutes + ":" + seconds);
             time = Long.parseLong(minutes) * 60000 + Long.parseLong(seconds) * 1000;
         } else {
             throw new InvalidCommandArgumentException("Must be a time stamp in format minutes:seconds");
