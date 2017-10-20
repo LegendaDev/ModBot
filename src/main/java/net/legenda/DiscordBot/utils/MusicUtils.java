@@ -107,14 +107,23 @@ public class MusicUtils {
 
     }
 
+    public void pause(Guild guild){
+        getAudioPlayer(guild).setPaused(false);
+    }
+
+    public void unPause(Guild guild){
+        getAudioPlayer(guild).setPaused(false);
+    }
+
     private void sendMessage(AudioTrack audioTrack, Message msg, TextChannel channel){
         EmbedBuilder builder = new EmbedBuilder();
         builder.setAuthor("Added:", audioTrack.getInfo().uri, msg.getAuthor().getAvatarUrl());
         builder.setColor(Color.getHSBColor(0f, 1f, 1f));
         String title = audioTrack.getInfo().title;
         String author = audioTrack.getInfo().author;
-        double lengthlong = audioTrack.getInfo().length;
-        double minutes = (lengthlong / 60000L);
+        String requested = players.get(msg.getGuild()).getValue().getQueue().stream().filter(info -> info.getTrack().equals(audioTrack)).findFirst().orElse(null).getAuthor().getEffectiveName();
+        double lengthLong = audioTrack.getInfo().length;
+        double minutes = (lengthLong / 60000L);
         double seconds = (minutes - Math.floor(minutes)) * 60;
         int i = 1;
         for(AudioTrackInfo track : players.get(msg.getGuild()).getValue().getQueue()){
@@ -125,10 +134,11 @@ public class MusicUtils {
         }
         String position = i + "";
         String length = (int) minutes + ":" + (int) seconds;
-        builder.addField("Title:", title, true);
-        builder.addField("Position:", position, false);
+        builder.addField("Title:", title, false);
         builder.addField("Author:", author, true);
-        builder.addField("Length:", length, false);
+        builder.addField("Position:", position, true);
+        builder.addField("Length:", length, true);
+        builder.addField("Requested:", requested, true );
         builder.setFooter("Created by " + MessageUtils.Author, MessageUtils.Author_Image);
         channel.sendMessage(builder.build()).queue();
     }
