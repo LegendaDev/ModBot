@@ -115,6 +115,14 @@ public class MusicUtils {
         getAudioPlayer(guild).setPaused(false);
     }
 
+    public void clear(Guild guild){
+        players.get(guild).getValue().getQueue().clear();
+    }
+
+    public void shuffle(Guild guild){
+        players.get(guild).getValue().shuffleQueue();
+    }
+
     private void sendMessage(AudioTrack audioTrack, Message msg, TextChannel channel){
         EmbedBuilder builder = new EmbedBuilder();
         builder.setAuthor("Added:", audioTrack.getInfo().uri, msg.getAuthor().getAvatarUrl());
