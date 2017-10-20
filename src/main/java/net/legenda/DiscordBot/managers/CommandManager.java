@@ -54,14 +54,22 @@ public class CommandManager {
     }
 
     private void initCommands() {
+        //Administrative
         commands.put("BanCommand", new BanCommand());
         commands.put("CleanCommand", new CleanCommand());
-        commands.put("DeveloperCommand", new DevelopersCommand());
         commands.put("KickCommand", new KickCommand());
-        commands.put("HelpCommand", new HelpCommand());
+        commands.put("UnbanCommand", new UnbanCommand());
+
+        //Fun
         commands.put("PingCommand", new PingCommand());
         commands.put("RollCommand", new RollCommand());
-        commands.put("UnbanCommand", new UnbanCommand());
+
+        //Misc
+        commands.put("HelpCommand", new HelpCommand());
+        commands.put("DeveloperCommand", new DevelopersCommand());
+
+        //Music
+        commands.put("ClearCommand", new ClearCommand());
         commands.put("PlayCommand", new PlayCommand());
         commands.put("QueueCommand", new QueueCommand());
         commands.put("LeaveCommand", new LeaveCommand());
