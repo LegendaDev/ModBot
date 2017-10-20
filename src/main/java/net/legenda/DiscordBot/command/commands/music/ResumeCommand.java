@@ -10,6 +10,6 @@ public class ResumeCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         Main.INSTANCE.musicUtils.unPause(event.getGuild());
-        sendEmbedMessage(":arrow_forward: Resumed:", event.getTextChannel(), false);
+        sendMessage(":arrow_forward: Resumed:", event.getTextChannel());
     }
 }
