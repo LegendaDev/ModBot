@@ -69,39 +69,34 @@ public class TrackManager extends AudioEventAdapter {
         Guild guild = info.getAuthor().getGuild();
         if (connected != null || guild.getAudioManager().isAttemptingToConnect()) {
             channel = connected;
-            EmbedBuilder builder = new EmbedBuilder();
-            builder.setAuthor(" :musical_note:  Now Playing", info.getTrack().getInfo().uri, info.getAuthor().getUser().getAvatarUrl());
-            builder.setDescription("`" + info.getTrack().getInfo().title + "` By `" + info.getTrack().getInfo().author + "`");
-            builder.setColor(Color.red);
-            builder.addField("Length: ", Main.INSTANCE.musicUtils.getFormattedLength(track.getInfo().length), true);
-            builder.addField("UpNext:", Main.INSTANCE.musicUtils.getTrackManager(guild).getQueue().stream().filter(audio -> !audio.getTrack().equals(track)).findFirst().orElse(null).getTrack().getInfo().title, true);
-            builder.addField("Requested By:", info.getAuthor().getEffectiveName(), true);
-            builder.setFooter("Created By " + MessageUtils.Author, MessageUtils.Author_Image);
-            info.getChannel().sendMessage(builder.build()).queue();
+            sendNextTrackMessage(info, guild, track);
         } else if (channel == null) {
             throw new InvalidCommandStateException("You must be in a VoiceChannel to summon the bot");
         }
-        System.out.println(info.getAuthor().getGuild().getAudioManager().getConnectionStatus());
         guild.getAudioManager().openAudioConnection(channel);
-
     }
 
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        queue.poll().getTrack();
+        queue.poll();
         if (!queue.isEmpty()) {
             player.playTrack(queue.element().getTrack());
             AudioTrackInfo info = queue.element();
-            EmbedBuilder builder = new EmbedBuilder();
-            builder.setAuthor("Now Playing", info.getTrack().getInfo().uri, info.getAuthor().getUser().getAvatarUrl());
-            builder.setColor(Color.getHSBColor(0f, 1f, 1f));
-            String message = "`" + info.getTrack().getInfo().title + "` By `" + info.getTrack().getInfo().author + "`\n"
-                    + "Requested By: " + info.getAuthor().getEffectiveName() + " Length: " + info.getTrack().getInfo().length;
-            builder.setDescription(message);
-            builder.setFooter("Created by " + MessageUtils.Author, MessageUtils.Author_Image);
-            info.getChannel().sendMessage("").queue();
+            Guild guild = info.getAuthor().getGuild();
+            sendNextTrackMessage(info, guild, track);
         }
+    }
 
+    private void sendNextTrackMessage(AudioTrackInfo info, Guild guild, AudioTrack track){
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setAuthor("Now Playing", info.getTrack().getInfo().uri, info.getAuthor().getUser().getAvatarUrl());
+        builder.setDescription("`" + info.getTrack().getInfo().title + "`");
+        builder.setColor(Color.red);
+        builder.addField("Requested By:", info.getAuthor().getEffectiveName(), true);
+        builder.addField("Length: ", Main.INSTANCE.musicUtils.getFormattedLength(track.getInfo().length), true);
+        builder.addField("UpNext:", Main.INSTANCE.musicUtils.getTrackManager(guild).getQueue().stream().filter(audio -> !audio.getTrack().equals(track)).findFirst().orElse(null).getTrack().getInfo().title, true);
+        builder.setFooter("Created By " + MessageUtils.Author, MessageUtils.Author_Image);
+        info.getChannel().sendMessage(builder.build()).queue();
     }
 
     @Override
@@ -113,5 +108,6 @@ public class TrackManager extends AudioEventAdapter {
     public void onTrackStuck(AudioPlayer player, AudioTrack track, long thresholdMs) {
         player.playTrack(track);
     }
+
 
 }
