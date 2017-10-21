@@ -24,12 +24,14 @@ public class NowPlayingCommand extends Command {
         if (track != null) {
             AudioTrackInfo info = trackManager.getQueue().stream().findFirst().orElse(null);
             EmbedBuilder builder = new EmbedBuilder();
-            builder.setAuthor("Now Playing", info.getTrack().getInfo().uri, Main.jdaBot.getSelfUser().getAvatarUrl());
+            AudioTrackInfo upNext = Main.INSTANCE.musicUtils.getTrackManager(guild).getQueue().stream().filter(audio -> !audio.getTrack().equals(track)).findFirst().orElse(null);
+            builder.setAuthor("Now Playing:", info.getTrack().getInfo().uri, info.getAuthor().getUser().getAvatarUrl());
+            builder.setDescription("`" + info.getTrack().getInfo().title + "`");
             builder.setColor(Color.red);
-            builder.setDescription("`" + info.getTrack().getInfo().title + "` By `" + info.getTrack().getInfo().author + "`");
+            builder.addField("Requested:", info.getAuthor().getEffectiveName(), true);
             builder.addField("Length: ", Main.INSTANCE.musicUtils.getFormattedLength(track.getInfo().length), true);
-            builder.addField("Requested By:", info.getAuthor().getEffectiveName(), true);
-            builder.setFooter("Created by " + MessageUtils.Author, MessageUtils.Author_Image);
+            builder.addField("UpNext:", upNext != null ? upNext.getTrack().getInfo().title : "Nothing", true);
+            builder.setFooter("Created By " + MessageUtils.Author, MessageUtils.Author_Image);
 
             event.getTextChannel().sendMessage(builder.build()).queue();
             return;
