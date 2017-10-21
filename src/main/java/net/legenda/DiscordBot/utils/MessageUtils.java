@@ -14,18 +14,18 @@ public class MessageUtils {
 
     private static float hue = 0f;
 
-    public MessageEmbed wrapMessage(String msg){
+    public MessageEmbed wrapMessage(String msg) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Color.getHSBColor(hue, 1f, 1f));
         hue += 0.12;
-        if(hue > 1)
+        if (hue > 1)
             hue = 0;
         eb.setDescription(msg);
         eb.setFooter("Created by " + Author, Author_Image);
         return eb.build();
     }
 
-    public  MessageEmbed wrapErrorMessage(String msg){
+    public MessageEmbed wrapErrorMessage(String msg) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(":warning:Error:warning:");
         eb.setColor(Color.RED);
