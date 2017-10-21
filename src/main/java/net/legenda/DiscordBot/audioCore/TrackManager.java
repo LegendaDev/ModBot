@@ -67,7 +67,7 @@ public class TrackManager extends AudioEventAdapter {
         VoiceChannel channel = info.getAuthor().getVoiceState().getChannel();
         VoiceChannel connected = info.getAuthor().getGuild().getAudioManager().getConnectedChannel();
         Guild guild = info.getAuthor().getGuild();
-        if (connected != null || guild.getAudioManager().isAttemptingToConnect()) {
+        if (connected != null) {
             channel = connected;
             sendNextTrackMessage(info, guild, track);
         } else if (channel == null) {
@@ -81,20 +81,18 @@ public class TrackManager extends AudioEventAdapter {
         queue.poll();
         if (!queue.isEmpty()) {
             player.playTrack(queue.element().getTrack());
-            AudioTrackInfo info = queue.element();
-            Guild guild = info.getAuthor().getGuild();
-            sendNextTrackMessage(info, guild, track);
         }
     }
 
     private void sendNextTrackMessage(AudioTrackInfo info, Guild guild, AudioTrack track){
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setAuthor("Now Playing", info.getTrack().getInfo().uri, info.getAuthor().getUser().getAvatarUrl());
+        AudioTrackInfo upNext = Main.INSTANCE.musicUtils.getTrackManager(guild).getQueue().stream().filter(audio -> !audio.getTrack().equals(track)).findFirst().orElse(null);
+        builder.setAuthor("Now Playing:", info.getTrack().getInfo().uri, info.getAuthor().getUser().getAvatarUrl());
         builder.setDescription("`" + info.getTrack().getInfo().title + "`");
         builder.setColor(Color.red);
-        builder.addField("Requested By:", info.getAuthor().getEffectiveName(), true);
+        builder.addField("Requested:", info.getAuthor().getEffectiveName(), true);
         builder.addField("Length: ", Main.INSTANCE.musicUtils.getFormattedLength(track.getInfo().length), true);
-        builder.addField("UpNext:", Main.INSTANCE.musicUtils.getTrackManager(guild).getQueue().stream().filter(audio -> !audio.getTrack().equals(track)).findFirst().orElse(null).getTrack().getInfo().title, true);
+        builder.addField("UpNext:", upNext != null ? upNext.getTrack().getInfo().title : "Nothing", true);
         builder.setFooter("Created By " + MessageUtils.Author, MessageUtils.Author_Image);
         info.getChannel().sendMessage(builder.build()).queue();
     }
