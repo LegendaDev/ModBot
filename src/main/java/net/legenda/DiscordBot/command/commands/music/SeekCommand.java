@@ -28,7 +28,6 @@ public class SeekCommand extends Command {
         } else {
             throw new InvalidCommandArgumentException("Must be a time stamp in format minutes:seconds");
         }
-
-        Main.INSTANCE.musicUtils.seek(event.getGuild(), time, event.getTextChannel());
+        Main.INSTANCE.musicUtils.seek(event.getGuild(), time);
     }
 }
