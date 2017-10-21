@@ -7,7 +7,6 @@ import net.dv8tion.jda.core.managers.GuildController;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
-import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
 @Command.cmdInfo(name = "Unban", description = "Unbans a user from the server", type = Command.Type.Admin, permission = Permission.BAN_MEMBERS)
 public class UnbanCommand extends Command {

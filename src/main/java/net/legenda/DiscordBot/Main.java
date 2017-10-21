@@ -23,10 +23,10 @@ public class Main {
     public static final Main INSTANCE = new Main();
 
     public static JDA jdaBot;
-    public String cmdPrefix = ".";
-    public MessageUtils msgUtil = new MessageUtils();
-    public MusicUtils musicUtils = new MusicUtils();
-    public CommandManager cmdManager = new CommandManager();
+    public final String cmdPrefix = ".";
+    public final MessageUtils msgUtil = new MessageUtils();
+    public final MusicUtils musicUtils = new MusicUtils();
+    public final CommandManager cmdManager = new CommandManager();
 
     public static HashMap<String, Role> roles;
     private static final SimpleLog LOGGER = SimpleLog.getLog(Main.class);

@@ -6,7 +6,6 @@ import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.audioCore.TrackManager;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
-import net.legenda.DiscordBot.utils.MusicUtils;
 
 @Command.cmdInfo(name = "Leave", description = "Leaves current channel", type = Command.Type.Music, alias = {"disconnect"})
 public class LeaveCommand extends Command {

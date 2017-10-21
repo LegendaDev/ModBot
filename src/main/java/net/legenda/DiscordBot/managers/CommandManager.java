@@ -104,17 +104,11 @@ public class CommandManager {
                 hierarchyofperm = i;
         }
         int hierarchyofuser = roles.indexOf(guild.getMember(user).getRoles().get(0));
-        if (hierarchyofperm >= hierarchyofuser)
-            return true;
-        return false;
+        return hierarchyofperm >= hierarchyofuser;
     }
 
     private static boolean hasPermission(Command cmd, Guild guild, Channel channel, User user) {
-        if (cmd.getPermission() == Permission.UNKNOWN)
-            return true;
-        if (PermissionUtil.checkPermission(channel, guild.getMember(user), cmd.getPermission()))
-            return true;
-        return false;
+        return cmd.getPermission() == Permission.UNKNOWN || PermissionUtil.checkPermission(channel, guild.getMember(user), cmd.getPermission());
     }
 
 }

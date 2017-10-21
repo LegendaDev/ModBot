@@ -11,12 +11,12 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class Command {
 
-    private String name = getClass().getAnnotation(cmdInfo.class).name();
-    private String description = getClass().getAnnotation(cmdInfo.class).description();
-    private Type type = getClass().getAnnotation(cmdInfo.class).type();
-    private String role = getClass().getAnnotation(cmdInfo.class).role();
-    private Permission perm = getClass().getAnnotation(cmdInfo.class).permission();
-    private String[] alias = getClass().getAnnotation(cmdInfo.class).alias();
+    private final String name = getClass().getAnnotation(cmdInfo.class).name();
+    private final String description = getClass().getAnnotation(cmdInfo.class).description();
+    private final Type type = getClass().getAnnotation(cmdInfo.class).type();
+    private final String role = getClass().getAnnotation(cmdInfo.class).role();
+    private final Permission perm = getClass().getAnnotation(cmdInfo.class).permission();
+    private final String[] alias = getClass().getAnnotation(cmdInfo.class).alias();
 
 
     /**
@@ -76,14 +76,14 @@ public abstract class Command {
     protected static void sendEmbedMessage(String msg, TextChannel channel, boolean delete) {
         channel.sendMessage(Main.INSTANCE.msgUtil.wrapMessage(msg)).queue(sent -> {
             if (delete)
-                sent.delete().queueAfter(3l, TimeUnit.SECONDS);
+                sent.delete().queueAfter(3L, TimeUnit.SECONDS);
         });
     }
 
     public static void sendErrorMessage(String msg, TextChannel channel, boolean delete) {
         channel.sendMessage(Main.INSTANCE.msgUtil.wrapErrorMessage(msg)).queue(sent -> {
             if (delete)
-                sent.delete().queueAfter(3l, TimeUnit.SECONDS);
+                sent.delete().queueAfter(3L, TimeUnit.SECONDS);
         });
     }
 

@@ -35,7 +35,7 @@ public class QueueCommand extends Command {
         int i = 1;
         for (AudioTrackInfo track : manager.getQueue().stream().filter(track -> !track.getTrack().equals(player.getPlayingTrack())).collect(Collectors.toList())) {
             if (i < 5)
-                queue.append(i).append(".`  ").append(track.getTrack().getInfo().title).append("` Requested By `" + user.getEffectiveName() + "`\n");
+                queue.append(i).append(".`  ").append(track.getTrack().getInfo().title).append("` Requested By `").append(user.getEffectiveName()).append("`\n");
             else
                 break;
             i++;

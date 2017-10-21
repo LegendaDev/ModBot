@@ -1,16 +1,14 @@
 package net.legenda.DiscordBot.utils;
 
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.awt.*;
 
 public class MessageUtils {
 
-    public static String Author = "Legenda";
-    public static String Author_Image = "https://cdn.discordapp.com/avatars/348464305164910605/11ec4dd6feaea03dc613a47efb1f6b27.jpg";
+    public static final String Author = "Legenda";
+    public static final String Author_Image = "https://cdn.discordapp.com/avatars/348464305164910605/11ec4dd6feaea03dc613a47efb1f6b27.jpg";
 
     private static float hue = 0f;
 

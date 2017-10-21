@@ -24,7 +24,7 @@ public class DevelopersCommand extends Command {
         for (Member member : members) {
             if (!member.getOnlineStatus().equals(OnlineStatus.OFFLINE))
                 if (member.getRoles().stream().anyMatch(role -> role.getName().equalsIgnoreCase("Developer"))) {
-                    builder.append("-" + member.getUser().getName() + "\n");
+                    builder.append("-").append(member.getUser().getName()).append("\n");
                 }
         }
         return new String(builder);
