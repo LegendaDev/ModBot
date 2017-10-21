@@ -8,6 +8,7 @@ import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.audioCore.AudioTrackInfo;
 import net.legenda.DiscordBot.audioCore.TrackManager;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 import net.legenda.DiscordBot.utils.MusicUtils;
 
 import java.awt.*;
@@ -29,6 +30,8 @@ public class QueueCommand extends Command {
         AudioTrackInfo info = manager.getQueue().stream().findFirst().orElse(null);
         Member user = info == null ? null : info.getAuthor();
         StringBuilder queue = new StringBuilder();
+        if(info == null)
+            throw new InvalidCommandStateException("The Queue is empty");
         int i = 1;
         for (AudioTrackInfo track : manager.getQueue().stream().filter(track -> !track.getTrack().equals(player.getPlayingTrack())).collect(Collectors.toList())) {
             if (i < 5)

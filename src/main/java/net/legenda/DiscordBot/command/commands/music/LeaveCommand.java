@@ -2,6 +2,7 @@ package net.legenda.DiscordBot.command.commands.music;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.managers.AudioManager;
+import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.audioCore.TrackManager;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
@@ -16,10 +17,8 @@ public class LeaveCommand extends Command {
         if(event.getGuild().getAudioManager().getConnectedChannel() == null && !event.getGuild().getAudioManager().isConnected()){
             throw new InvalidCommandStateException("Currently not connected to any voice channels");
         } else {
-            if(MusicUtils.players.get(event.getGuild()) != null){
-                TrackManager track =  MusicUtils.players.get(event.getGuild()).getValue();
-                track.clearQueue();
-            }
+            TrackManager track = Main.INSTANCE.musicUtils.getTrackManager(event.getGuild());
+            track.clearQueue(true);
             manager.closeAudioConnection();
             sendMessage(":arrow_up: Left channel", event.getTextChannel());
         }

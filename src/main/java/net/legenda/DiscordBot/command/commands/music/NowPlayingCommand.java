@@ -6,9 +6,10 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.audioCore.AudioTrackInfo;
+import net.legenda.DiscordBot.audioCore.TrackManager;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 import net.legenda.DiscordBot.utils.MessageUtils;
-import net.legenda.DiscordBot.utils.MusicUtils;
 
 import java.awt.*;
 
@@ -18,17 +19,21 @@ public class NowPlayingCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         Guild guild = event.getGuild();
-        AudioTrackInfo info = MusicUtils.players.get(guild).getValue().getQueue().stream().findFirst().orElse(null);
+        TrackManager trackManager = Main.INSTANCE.musicUtils.getTrackManager(guild);
         AudioTrack track = Main.INSTANCE.musicUtils.getAudioPlayer(guild).getPlayingTrack();
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setAuthor("Now Playing", info.getTrack().getInfo().uri, Main.jdaBot.getSelfUser().getAvatarUrl());
-        builder.setColor(Color.red);
-        builder.setDescription("`" + info.getTrack().getInfo().title + "` By `" + info.getTrack().getInfo().author + "`");
-        builder.addField("Length: ", Main.INSTANCE.musicUtils.getFormattedLength(track.getInfo().length), true);
-        builder.addField("Requested By:", info.getAuthor().getEffectiveName(), true);
-        builder.setFooter("Created by " + MessageUtils.Author, MessageUtils.Author_Image);
+        if (track != null) {
+            AudioTrackInfo info = trackManager.getQueue().stream().findFirst().orElse(null);
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.setAuthor("Now Playing", info.getTrack().getInfo().uri, Main.jdaBot.getSelfUser().getAvatarUrl());
+            builder.setColor(Color.red);
+            builder.setDescription("`" + info.getTrack().getInfo().title + "` By `" + info.getTrack().getInfo().author + "`");
+            builder.addField("Length: ", Main.INSTANCE.musicUtils.getFormattedLength(track.getInfo().length), true);
+            builder.addField("Requested By:", info.getAuthor().getEffectiveName(), true);
+            builder.setFooter("Created by " + MessageUtils.Author, MessageUtils.Author_Image);
 
-        event.getTextChannel().sendMessage(builder.build()).queue();
-
+            event.getTextChannel().sendMessage(builder.build()).queue();
+            return;
+        }
+        throw new InvalidCommandStateException("There Is No Track Currently Playing");
     }
 }

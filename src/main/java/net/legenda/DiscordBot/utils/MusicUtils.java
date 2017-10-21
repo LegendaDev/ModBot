@@ -38,6 +38,12 @@ public class MusicUtils {
         return newPlayer(guild);
     }
 
+    public TrackManager getTrackManager(Guild guild){
+        if(!players.containsKey(guild)){
+            newPlayer(guild);
+        }
+        return players.get(guild).getValue();
+    }
 
     private AudioPlayer newPlayer(Guild guild) {
         AudioPlayer player = manager.createPlayer();
@@ -57,23 +63,22 @@ public class MusicUtils {
         TextChannel channel = msg.getTextChannel();
         getAudioPlayer(guild);
 
-        manager.setFrameBufferDuration(500);
+        manager.setFrameBufferDuration(200);
         manager.loadItemOrdered(guild, identifier, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack audioTrack) {
-                TrackManager manager = players.get(guild).getValue();
+                TrackManager manager = getTrackManager(guild);
                 manager.queue(audioTrack, author, channel);
                 sendMessage(audioTrack, msg, channel);
-
             }
 
             @Override
             public void playlistLoaded(AudioPlaylist audioPlaylist) {
-                TrackManager manager = players.get(guild).getValue();
+                TrackManager manager = getTrackManager(guild);
                 List<AudioTrack> playlist = audioPlaylist.getTracks();
-                AudioTrack audioTrack = playlist.get(0);
                 if(playlist.isEmpty())
                     throw new InvalidCommandStateException("Search query returned nothing");
+                AudioTrack audioTrack = playlist.get(0);
                 if(identifier.startsWith("ytsearch:")){
                     manager.queue(audioTrack, author, channel);
                     sendMessage(audioTrack, msg, channel);
@@ -99,7 +104,7 @@ public class MusicUtils {
         getAudioPlayer(guild).stopTrack();
     }
 
-    public void seek(Guild guild, Long pos, TextChannel channel){
+    public void seek(Guild guild, Long pos){
         AudioTrack track = getAudioPlayer(guild).getPlayingTrack();
         if(pos > track.getInfo().length)
             throw new InvalidCommandStateException("Cannot seek longer than the current song!");
@@ -116,11 +121,11 @@ public class MusicUtils {
     }
 
     public void clear(Guild guild){
-        players.get(guild).getValue().getQueue().clear();
+        getTrackManager(guild).clearQueue(false);
     }
 
     public void shuffle(Guild guild){
-        players.get(guild).getValue().shuffleQueue();
+        getTrackManager(guild).shuffleQueue();
     }
 
     private void sendMessage(AudioTrack audioTrack, Message msg, TextChannel channel){
@@ -129,19 +134,10 @@ public class MusicUtils {
         builder.setColor(Color.getHSBColor(0f, 1f, 1f));
         String title = audioTrack.getInfo().title;
         String author = audioTrack.getInfo().author;
-        String requested = players.get(msg.getGuild()).getValue().getQueue().stream().filter(info -> info.getTrack().equals(audioTrack)).findFirst().orElse(null).getAuthor().getEffectiveName();
-        double lengthLong = audioTrack.getInfo().length;
-        double minutes = (lengthLong / 60000L);
-        double seconds = (minutes - Math.floor(minutes)) * 60;
-        int i = 1;
-        for(AudioTrackInfo track : players.get(msg.getGuild()).getValue().getQueue()){
-            if(track.getTrack().equals(audioTrack)){
-                break;
-            }
-            i++;
-        }
-        String position = i + "";
-        String length = (int) minutes + ":" + (int) seconds;
+        AudioTrackInfo info = players.get(msg.getGuild()).getValue().getQueue().stream().filter(trackInfo -> trackInfo.getTrack().equals(audioTrack)).findFirst().orElse(null);
+        String requested = info == null ? null : info.getAuthor().getEffectiveName();
+        String position = getPositionInQueue(audioTrack, msg.getGuild());
+        String length = getFormattedLength(audioTrack.getInfo().length);
         builder.addField("Title:", title, false);
         builder.addField("Author:", author, true);
         builder.addField("Position:", position, true);
@@ -149,6 +145,28 @@ public class MusicUtils {
         builder.addField("Requested:", requested, true );
         builder.setFooter("Created by " + MessageUtils.Author, MessageUtils.Author_Image);
         channel.sendMessage(builder.build()).queue();
+    }
+
+    public String getFormattedLength(Long length){
+        double lengthDubl = length;
+        double minutes = (lengthDubl / 60000L);
+        double seconds = (minutes - Math.floor(minutes)) * 60;
+        String secondStr = (int) seconds + "";
+        if(secondStr.toCharArray().length < 2){
+            secondStr = "0" + secondStr;
+        }
+        return (int) minutes + ":" + secondStr;
+    }
+
+    private String getPositionInQueue(AudioTrack audioTrack, Guild guild){
+        int i = 1;
+        for(AudioTrackInfo track : players.get(guild).getValue().getQueue()){
+            if(track.getTrack().equals(audioTrack)){
+                break;
+            }
+            i++;
+        }
+        return i + "";
     }
 
 }
