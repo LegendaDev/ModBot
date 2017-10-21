@@ -42,12 +42,13 @@ public class TrackManager extends AudioEventAdapter {
         return new LinkedHashSet<>(queue);
     }
 
-    public AudioTrackInfo getAudioTrackInfo(com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo track) {
-        return queue.stream().filter(info -> info.getTrack().equals(track)).findFirst().orElse(null);
-    }
-
-    public void clearQueue() {
+    public void clearQueue(boolean current) {
+        List<AudioTrackInfo> oldQueue = new ArrayList<>(getQueue());
+        if(oldQueue.isEmpty())
+            throw new InvalidCommandStateException("The Queue is already empty");
         queue.clear();
+        if (!current)
+            queue.add(oldQueue.get(0));
     }
 
     public void shuffleQueue() {
@@ -56,7 +57,7 @@ public class TrackManager extends AudioEventAdapter {
         oldQueue.remove(0);
         Collections.shuffle(oldQueue);
         oldQueue.add(0, currentTrack);
-        clearQueue();
+        clearQueue(true);
         queue.addAll(oldQueue);
     }
 
@@ -66,18 +67,21 @@ public class TrackManager extends AudioEventAdapter {
         VoiceChannel channel = info.getAuthor().getVoiceState().getChannel();
         VoiceChannel connected = info.getAuthor().getGuild().getAudioManager().getConnectedChannel();
         Guild guild = info.getAuthor().getGuild();
-        if (connected != null || guild.getAudioManager().isAttemptingToConnect()){
+        if (connected != null || guild.getAudioManager().isAttemptingToConnect()) {
             channel = connected;
             EmbedBuilder builder = new EmbedBuilder();
-            builder.setAuthor(":musical_note: Now Playing", info.getTrack().getInfo().uri, info.getAuthor().getUser().getAvatarUrl());
-            builder.setDescription("`" + info.getTrack().getInfo().title + "` By `" + info.getTrack().getInfo().author);
-            builder.addField("Length: " , Main.INSTANCE.musicUtils.getFormattedLength(track.getInfo().length), true);
+            builder.setAuthor(" :musical_note:  Now Playing", info.getTrack().getInfo().uri, info.getAuthor().getUser().getAvatarUrl());
+            builder.setDescription("`" + info.getTrack().getInfo().title + "` By `" + info.getTrack().getInfo().author + "`");
+            builder.setColor(Color.red);
+            builder.addField("Length: ", Main.INSTANCE.musicUtils.getFormattedLength(track.getInfo().length), true);
             builder.addField("UpNext:", Main.INSTANCE.musicUtils.getTrackManager(guild).getQueue().stream().filter(audio -> !audio.getTrack().equals(track)).findFirst().orElse(null).getTrack().getInfo().title, true);
             builder.addField("Requested By:", info.getAuthor().getEffectiveName(), true);
+            builder.setFooter("Created By " + MessageUtils.Author, MessageUtils.Author_Image);
             info.getChannel().sendMessage(builder.build()).queue();
-        } else if(channel == null){
+        } else if (channel == null) {
             throw new InvalidCommandStateException("You must be in a VoiceChannel to summon the bot");
         }
+        System.out.println(info.getAuthor().getGuild().getAudioManager().getConnectionStatus());
         guild.getAudioManager().openAudioConnection(channel);
 
     }
@@ -85,7 +89,7 @@ public class TrackManager extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         queue.poll().getTrack();
-        if (!queue.isEmpty()){
+        if (!queue.isEmpty()) {
             player.playTrack(queue.element().getTrack());
             AudioTrackInfo info = queue.element();
             EmbedBuilder builder = new EmbedBuilder();
@@ -107,8 +111,7 @@ public class TrackManager extends AudioEventAdapter {
 
     @Override
     public void onTrackStuck(AudioPlayer player, AudioTrack track, long thresholdMs) {
-        System.out.println("Stuck track");
+        player.playTrack(track);
     }
-
 
 }
