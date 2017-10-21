@@ -27,9 +27,9 @@ public class BanCommand extends Command {
         User toBan = event.getMessage().getMentionedUsers().stream().findFirst().orElse(null);
         if (toBan != null) {
             if (!reason.isEmpty())
-                guildController.ban(toBan, 0, reason).queue();
+                guildController.ban(toBan, 7, reason).queue();
             else
-                guildController.ban(toBan, 0).queue();
+                guildController.ban(toBan, 7).queue();
             sendEmbedMessage("Banned user: " + toBan.getAsMention(), event.getTextChannel(), false);
 
         } else
