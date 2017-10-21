@@ -1,4 +1,4 @@
-package net.legenda.DiscordBot.command.commands;
+package net.legenda.DiscordBot.command.commands.fun;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.command.Command;
