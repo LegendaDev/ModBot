@@ -18,8 +18,12 @@ public class LeaveCommand extends Command {
             throw new InvalidCommandStateException("Currently not connected to any voice channels");
         } else {
             TrackManager track = Main.INSTANCE.musicUtils.getTrackManager(event.getGuild());
-            track.clearQueue(true);
             manager.closeAudioConnection();
+            try {
+                track.clearQueue(true);
+            } catch(Exception e){
+                e.getMessage();
+            }
             sendMessage(":arrow_up: Left channel", event.getTextChannel());
         }
     }
