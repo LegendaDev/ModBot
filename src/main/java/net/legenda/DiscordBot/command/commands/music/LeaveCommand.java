@@ -6,6 +6,7 @@ import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.audioCore.TrackManager;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
+import net.legenda.DiscordBot.utils.MusicUtils;
 
 @Command.cmdInfo(name = "Leave", description = "Leaves current channel", type = Command.Type.Music, alias = {"disconnect"})
 public class LeaveCommand extends Command {
@@ -17,6 +18,7 @@ public class LeaveCommand extends Command {
             throw new InvalidCommandStateException("Currently not connected to any voice channels");
         } else {
             TrackManager track = Main.INSTANCE.musicUtils.getTrackManager(event.getGuild());
+            MusicUtils.players.remove(event.getGuild());
             manager.closeAudioConnection();
             try {
                 track.clearQueue(true);
