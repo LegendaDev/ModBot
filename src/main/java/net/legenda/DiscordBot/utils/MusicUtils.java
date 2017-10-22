@@ -63,7 +63,7 @@ public class MusicUtils {
         TextChannel channel = msg.getTextChannel();
         getAudioPlayer(guild);
 
-        manager.setFrameBufferDuration(200);
+        manager.setFrameBufferDuration(500);
         manager.loadItemOrdered(guild, identifier, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack audioTrack) {
@@ -133,13 +133,11 @@ public class MusicUtils {
         builder.setAuthor("Added:", audioTrack.getInfo().uri, msg.getAuthor().getAvatarUrl());
         builder.setColor(Color.getHSBColor(0f, 1f, 1f));
         String title = audioTrack.getInfo().title;
-        String author = audioTrack.getInfo().author;
         AudioTrackInfo info = players.get(msg.getGuild()).getValue().getQueue().stream().filter(trackInfo -> trackInfo.getTrack().equals(audioTrack)).findFirst().orElse(null);
         String requested = info == null ? null : info.getAuthor().getEffectiveName();
         String position = getPositionInQueue(audioTrack, msg.getGuild());
         String length = getFormattedLength(audioTrack.getInfo().length);
         builder.addField("Title:", title, false);
-        builder.addField("Author:", author, true);
         builder.addField("Position:", position, true);
         builder.addField("Length:", length, true);
         builder.addField("Requested:", requested, true );
