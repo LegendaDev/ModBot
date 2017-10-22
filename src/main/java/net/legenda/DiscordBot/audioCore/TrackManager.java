@@ -69,10 +69,10 @@ public class TrackManager extends AudioEventAdapter {
         Guild guild = info.getAuthor().getGuild();
         if (connected != null) {
             channel = connected;
-            sendNextTrackMessage(info, guild, track);
         } else if (channel == null) {
             throw new InvalidCommandStateException("You must be in a VoiceChannel to summon the bot");
         }
+        sendNextTrackMessage(info, guild, track);
         guild.getAudioManager().openAudioConnection(channel);
     }
 
@@ -106,6 +106,5 @@ public class TrackManager extends AudioEventAdapter {
     public void onTrackStuck(AudioPlayer player, AudioTrack track, long thresholdMs) {
         player.playTrack(track);
     }
-
 
 }
