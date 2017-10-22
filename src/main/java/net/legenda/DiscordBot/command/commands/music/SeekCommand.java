@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-@Command.cmdInfo(name = "Seek", description = "Skips to a particular point", type = Command.Type.Music)
+@Command.cmdInfo(name = "Seek", description = "Skips to a particular point", type = Command.Type.Music, role = "DJ")
 public class SeekCommand extends Command {
 
     @Override
