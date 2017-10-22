@@ -40,7 +40,7 @@ public class CommandManager {
             for (Command cmd : commands.values()) {
                 if (cmd.getName().equalsIgnoreCase(args[0]) || Arrays.stream(cmd.getAlias()).anyMatch(alias -> alias.equalsIgnoreCase(args[0]))) {
                     if (hasPermission(cmd, guild, channel, user)) {
-                        if (hasRole(cmd, guild, user)) {
+                        if (hasRole(cmd, guild, user) || PermissionUtil.checkPermission(channel, guild.getMember(user), Permission.ADMINISTRATOR)) {
                             String[] arguments = Arrays.copyOfRange(args, 1, args.length);
                             cmd.execute(arguments, event);
                             return;
