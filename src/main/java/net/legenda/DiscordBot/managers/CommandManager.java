@@ -80,6 +80,7 @@ public class CommandManager {
         commands.put("NowPlayingCommand", new NowPlayingCommand());
         commands.put("SeekCommand", new SeekCommand());
         commands.put("SkipCommand", new SkipCommand());
+        commands.put("SkipToCommand", new SkipToCommand());
         commands.put("ShuffleCommand", new ShuffleCommand());
         commands.put("StopCommand", new StopCommand());
         commands.put("ResumeCommand", new ResumeCommand());

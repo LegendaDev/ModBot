@@ -61,6 +61,10 @@ public class TrackManager extends AudioEventAdapter {
         queue.addAll(oldQueue);
     }
 
+    public void removeCollectionFromQueue(Collection<AudioTrackInfo> c){
+        queue.removeAll(c);
+    }
+
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
         AudioTrackInfo info = queue.element();

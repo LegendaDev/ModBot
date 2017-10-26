@@ -17,10 +17,9 @@ import net.legenda.DiscordBot.audioCore.TrackManager;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
 import java.awt.*;
-import java.util.AbstractMap;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MusicUtils {
 
@@ -104,7 +103,10 @@ public class MusicUtils {
         });
     }
 
-    public void skipTrack(Guild guild) {
+    public void skipTrack(Guild guild, int position) {
+        List<AudioTrackInfo> Queue = new ArrayList<>(getTrackManager(guild).getQueue());
+        List<AudioTrackInfo> toRemove = Queue.stream().filter(info -> Queue.indexOf(info) != 0).limit(position - 1).collect(Collectors.toList());
+        getTrackManager(guild).removeCollectionFromQueue(toRemove);
         getAudioPlayer(guild).stopTrack();
     }
 
@@ -168,6 +170,7 @@ public class MusicUtils {
             }
             i++;
         }
+        i -= 1;
         return i + "";
     }
 

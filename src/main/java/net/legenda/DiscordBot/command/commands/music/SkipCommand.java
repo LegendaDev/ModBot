@@ -12,6 +12,6 @@ public class SkipCommand extends Command {
     public void execute(String[] args, MessageReceivedEvent event) {
         String currentsong = Main.INSTANCE.musicUtils.getAudioPlayer(event.getGuild()).getPlayingTrack().getInfo().title;
         sendMessage(":track_next: Skipped: `" + currentsong + "`", event.getTextChannel());
-        Main.INSTANCE.musicUtils.skipTrack(event.getGuild());
+        Main.INSTANCE.musicUtils.skipTrack(event.getGuild(), 1);
     }
 }
