@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.legenda.DiscordBot.Main;
+import net.legenda.DiscordBot.command.commands.music.LoopCommand;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 import net.legenda.DiscordBot.utils.MessageUtils;
 
@@ -44,7 +45,7 @@ public class TrackManager extends AudioEventAdapter {
 
     public void clearQueue(boolean current) {
         List<AudioTrackInfo> oldQueue = new ArrayList<>(getQueue());
-        if(oldQueue.isEmpty())
+        if (oldQueue.isEmpty())
             throw new InvalidCommandStateException("The Queue is already empty");
         queue.clear();
         if (!current)
@@ -61,7 +62,16 @@ public class TrackManager extends AudioEventAdapter {
         queue.addAll(oldQueue);
     }
 
-    public void removeCollectionFromQueue(Collection<AudioTrackInfo> c){
+    private void addTop(AudioTrackInfo info) {
+        List<AudioTrackInfo> oldQueue = new ArrayList<>(getQueue());
+        if (!oldQueue.isEmpty())
+            oldQueue.remove(0);
+        oldQueue.add(0, info);
+        clearQueue(true);
+        queue.addAll(oldQueue);
+    }
+
+    public void removeCollectionFromQueue(Collection<AudioTrackInfo> c) {
         queue.removeAll(c);
     }
 
@@ -82,13 +92,18 @@ public class TrackManager extends AudioEventAdapter {
 
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        queue.poll();
-        if (!queue.isEmpty()) {
-            player.playTrack(queue.element().getTrack());
+        if (!LoopCommand.getRepeat()) {
+            queue.poll();
+            if (!queue.isEmpty()) {
+                player.playTrack(queue.element().getTrack());
+            }
+        } else {
+            addTop(queue.element());
+            player.playTrack(track.makeClone());
         }
     }
 
-    private void sendNextTrackMessage(AudioTrackInfo info, Guild guild, AudioTrack track){
+    private void sendNextTrackMessage(AudioTrackInfo info, Guild guild, AudioTrack track) {
         EmbedBuilder builder = new EmbedBuilder();
         AudioTrackInfo upNext = Main.INSTANCE.musicUtils.getTrackManager(guild).getQueue().stream().filter(audio -> !audio.getTrack().equals(track)).findFirst().orElse(null);
         builder.setAuthor("Now Playing:", info.getTrack().getInfo().uri, info.getAuthor().getUser().getAvatarUrl());
