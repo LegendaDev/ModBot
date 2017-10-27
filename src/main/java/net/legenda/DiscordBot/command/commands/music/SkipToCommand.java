@@ -10,13 +10,10 @@ public class SkipToCommand extends Command {
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
-        String currentsong = Main.INSTANCE.musicUtils.getAudioPlayer(event.getGuild()).getPlayingTrack().getInfo().title;
-        sendMessage(":track_next: Skipped: `" + currentsong + "`", event.getTextChannel());
         if (args.length < 1)
-            throw new InvalidCommandArgumentException("Usuage: .SkipTo (Position)");
+            throw new InvalidCommandArgumentException("Usage: .SkipTo (Position)");
         int position = Integer.parseInt(args[0]);
-        if (position != 1)
-            Main.INSTANCE.musicUtils.skipTrack(event.getGuild(), position);
+        Main.INSTANCE.musicUtils.skipTrack(event.getTextChannel(), position);
     }
 
 }
