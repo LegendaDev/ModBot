@@ -5,8 +5,10 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.legenda.DiscordBot.Main;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Command {
@@ -29,6 +31,7 @@ public abstract class Command {
         Admin, Music, Fun, Misc
     }
 
+    @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
     public @interface cmdInfo {
         String name();
@@ -65,11 +68,11 @@ public abstract class Command {
         return this.type;
     }
 
-    public String[] getAlias(){
+    public String[] getAlias() {
         return this.alias;
     }
 
-    protected static void sendMessage(String msg, TextChannel channel){
+    protected static void sendMessage(String msg, TextChannel channel) {
         channel.sendMessage(msg).queue();
     }
 
