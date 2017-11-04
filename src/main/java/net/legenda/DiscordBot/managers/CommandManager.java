@@ -6,10 +6,7 @@ import net.legenda.DiscordBot.command.Command;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.utils.PermissionUtil;
-import net.legenda.DiscordBot.command.commands.admin.BanCommand;
-import net.legenda.DiscordBot.command.commands.admin.CleanCommand;
-import net.legenda.DiscordBot.command.commands.admin.KickCommand;
-import net.legenda.DiscordBot.command.commands.admin.UnbanCommand;
+import net.legenda.DiscordBot.command.commands.admin.*;
 import net.legenda.DiscordBot.command.commands.fun.PingCommand;
 import net.legenda.DiscordBot.command.commands.fun.RollCommand;
 import net.legenda.DiscordBot.command.commands.misc.DevelopersCommand;
@@ -60,6 +57,7 @@ public class CommandManager {
         //Administrative
         commands.put("BanCommand", new BanCommand());
         commands.put("CleanCommand", new CleanCommand());
+        commands.put("CooldownCommand", new CooldownCommand());
         commands.put("KickCommand", new KickCommand());
         commands.put("UnbanCommand", new UnbanCommand());
 
