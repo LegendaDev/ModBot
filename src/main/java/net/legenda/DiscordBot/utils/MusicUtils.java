@@ -14,6 +14,7 @@ import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.audioCore.AudioTrackInfo;
 import net.legenda.DiscordBot.audioCore.PlayerSendHandler;
 import net.legenda.DiscordBot.audioCore.TrackManager;
+import net.legenda.DiscordBot.command.commands.music.LoopCommand;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
 import java.awt.*;
@@ -109,9 +110,10 @@ public class MusicUtils {
         List<AudioTrackInfo> toRemove = Queue.stream().filter(info -> Queue.indexOf(info) != 0).limit(position - 1).collect(Collectors.toList());
         getTrackManager(guild).removeCollectionFromQueue(toRemove);
         AudioTrackInfo current = Queue.stream().findFirst().orElse(null);
-        AudioTrackInfo next = new ArrayList<>(getTrackManager(guild).getQueue()).get(position - 1);
+        AudioTrackInfo next = Queue.isEmpty() ? null : Queue.get(position - 1);
         String skippedTrack = position == 1 ? (current != null ? current.getTrack().getInfo().title : "") : next != null ? next.getTrack().getInfo().title : "NONE";
         channel.sendMessage(":track_next: Skipped" + (position != 1 ? " To: `" + skippedTrack  + "`" : ": `" + skippedTrack + "`")).queue();
+        LoopCommand.endRepeat();
         getAudioPlayer(guild).stopTrack();
 
     }

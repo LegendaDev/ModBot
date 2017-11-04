@@ -37,4 +37,8 @@ public class LoopCommand extends Command {
             times--;
         return times <= -1 || times != 0;
     }
+
+    public static void endRepeat() {
+        times = 0;
+    }
 }
