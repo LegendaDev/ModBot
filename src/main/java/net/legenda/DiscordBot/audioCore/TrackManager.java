@@ -92,7 +92,11 @@ public class TrackManager extends AudioEventAdapter {
 
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        if (!LoopCommand.getRepeat()) {
+        AudioTrackInfo audioTrackInfo = getQueue().stream().findFirst().orElse(null);
+        if (audioTrackInfo == null)
+            return;
+        Guild guild = audioTrackInfo.getAuthor().getGuild();
+        if (!LoopCommand.getRepeat(guild)) {
             queue.poll();
             if (!queue.isEmpty()) {
                 player.playTrack(queue.element().getTrack());
