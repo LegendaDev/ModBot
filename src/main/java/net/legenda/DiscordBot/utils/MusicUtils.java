@@ -113,7 +113,7 @@ public class MusicUtils {
         AudioTrackInfo next = Queue.isEmpty() ? null : Queue.get(position - 1);
         String skippedTrack = position == 1 ? (current != null ? current.getTrack().getInfo().title : "") : next != null ? next.getTrack().getInfo().title : "NONE";
         channel.sendMessage(":track_next: Skipped" + (position != 1 ? " To: `" + skippedTrack  + "`" : ": `" + skippedTrack + "`")).queue();
-        LoopCommand.endRepeat();
+        LoopCommand.endRepeat(guild);
         getAudioPlayer(guild).stopTrack();
 
     }
