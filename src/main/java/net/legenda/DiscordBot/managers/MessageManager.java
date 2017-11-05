@@ -12,7 +12,7 @@ public class MessageManager extends ListenerAdapter {
         try {
             CommandManager.execute(event);
         } catch(Exception e){
-            Main.LOGGER.warn(e.getLocalizedMessage());
+            Main.LOGGER.warn(e.getStackTrace());
             Command.sendErrorMessage(e.getLocalizedMessage(), event.getTextChannel(),false);
         }
     }
