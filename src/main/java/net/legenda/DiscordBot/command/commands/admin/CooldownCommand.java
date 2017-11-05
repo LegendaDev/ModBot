@@ -15,8 +15,8 @@ public class CooldownCommand extends Command {
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
-        if(args.length <= 1)
-            throw new InvalidCommandArgumentException("Usage: .Mute <@User>");
+        if(args.length == 0)
+            throw new InvalidCommandArgumentException("Usage: .Cooldown <@User>");
         User toMute = event.getMessage().getMentionedUsers().size() > 0 ? event.getMessage().getMentionedUsers().get(0) : null;
         if (toMute != null) {
             Guild guild = event.getGuild();
@@ -24,7 +24,8 @@ public class CooldownCommand extends Command {
             Role muteRole = guild.getRoles().stream().filter(role -> role.getName().equalsIgnoreCase("Cooldown")).findFirst().orElse(null);
             if(muteRole == null)
                 throw new InvalidCommandStateException("You need a role called Cooldown to use this");
-            guildController.addSingleRoleToMember(event.getMember(), muteRole).queue();
+            guildController.removeRolesFromMember(guild.getMember(toMute), guild.getMember(toMute).getRoles()).queue();
+            guildController.addSingleRoleToMember(guild.getMember(toMute), muteRole).queue();
             sendEmbedMessage("Added " + toMute.getAsMention() + " To Cooldown", event.getTextChannel(), false);
         } else
             throw new InvalidCommandArgumentException("Could not find User");
