@@ -23,7 +23,7 @@ public class PlayCommand extends Command {
             input = "ytsearch:" + input;
         }
 
-        Main.INSTANCE.musicUtils.newTrack(input, event.getMember(), event.getMessage());
+        Main.INSTANCE.musicUtils.newTrack(input, event.getMember(), event.getMessage(), false);
 
     }
 

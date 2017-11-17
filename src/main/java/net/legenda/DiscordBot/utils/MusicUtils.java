@@ -58,7 +58,7 @@ public class MusicUtils {
 
     }
 
-    public void newTrack(String identifier, Member author, Message msg) {
+    public void newTrack(String identifier, Member author, Message msg, boolean top) {
         Guild guild = author.getGuild();
         TextChannel channel = msg.getTextChannel();
         getAudioPlayer(guild);
@@ -68,7 +68,7 @@ public class MusicUtils {
             @Override
             public void trackLoaded(AudioTrack audioTrack) {
                 TrackManager manager = getTrackManager(guild);
-                manager.queue(audioTrack, author, channel);
+                manager.queue(audioTrack, author, channel, top);
                 if (getTrackManager(guild).getQueue().size() != 1){
                     sendMessage(audioTrack, msg, channel);
                 }
@@ -82,7 +82,7 @@ public class MusicUtils {
                     throw new InvalidCommandStateException("Search query returned nothing");
                 AudioTrack audioTrack = playlist.get(0);
                 if (identifier.startsWith("ytsearch:")) {
-                    manager.queue(audioTrack, author, channel);
+                    manager.queue(audioTrack, author, channel, top);
                     if (getTrackManager(guild).getQueue().size() != 1){
                         sendMessage(audioTrack, msg, channel);
                     }

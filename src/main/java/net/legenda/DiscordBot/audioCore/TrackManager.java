@@ -19,6 +19,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 
 public class TrackManager extends AudioEventAdapter {
 
@@ -30,9 +31,15 @@ public class TrackManager extends AudioEventAdapter {
         this.queue = new LinkedBlockingQueue<>();
     }
 
-    public void queue(AudioTrack track, Member author, TextChannel channel) {
+    public void queue(AudioTrack track, Member author, TextChannel channel, boolean top) {
         AudioTrackInfo info = new AudioTrackInfo(track, author, channel);
+        Set<AudioTrackInfo> currentQueue = new LinkedHashSet<>();
+        if(top){
+            currentQueue = getQueue().stream().skip(1).collect(Collectors.toSet());
+            clearQueue(false);
+        }
         queue.add(info);
+        queue.addAll(currentQueue);
 
         if (player.getPlayingTrack() == null) {
             player.playTrack(track);
