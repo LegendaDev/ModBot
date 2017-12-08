@@ -86,6 +86,13 @@ public class MusicUtils {
                     if (getTrackManager(guild).getQueue().size() != 1){
                         sendMessage(audioTrack, msg, channel);
                     }
+                } else {
+                    for(AudioTrack track : playlist){
+                        manager.queue(track, author, channel, top);
+                    }
+                    if (getTrackManager(guild).getQueue().size() != 1){
+                        sendMessage(audioTrack, msg, channel);
+                    }
                 }
             }
 
@@ -138,6 +145,10 @@ public class MusicUtils {
         getTrackManager(guild).clearQueue(false);
     }
 
+    public String remove(Guild guild, int number) {
+        return getTrackManager(guild).removeItem(number);
+    }
+
     public void shuffle(Guild guild) {
         getTrackManager(guild).shuffleQueue();
     }
@@ -150,7 +161,7 @@ public class MusicUtils {
         AudioTrackInfo info = players.get(msg.getGuild()).getValue().getQueue().stream().filter(trackInfo -> trackInfo.getTrack().equals(audioTrack)).findFirst().orElse(null);
         String requested = info == null ? null : info.getAuthor().getEffectiveName();
         String position = getPositionInQueue(audioTrack, msg.getGuild());
-        String length = getFormattedLength(audioTrack.getInfo().length);
+        String length = getFormattedTime(audioTrack.getInfo().length);
         builder.addField("Title:", title, false);
         builder.addField("Position:", position, true);
         builder.addField("Length:", length, true);
@@ -159,7 +170,11 @@ public class MusicUtils {
         channel.sendMessage(builder.build()).queue();
     }
 
-    public String getFormattedLength(Long length) {
+    private void sendPlaylistMessage(AudioPlaylist playlist, Message msg, TextChannel channel){
+
+    }
+
+    public String getFormattedTime(Long length) {
         double lengthDubl = length;
         double minutes = (lengthDubl / 60000L);
         double seconds = (minutes - Math.floor(minutes)) * 60;

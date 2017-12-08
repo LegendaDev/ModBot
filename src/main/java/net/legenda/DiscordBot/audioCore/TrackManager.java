@@ -59,6 +59,16 @@ public class TrackManager extends AudioEventAdapter {
             queue.add(oldQueue.get(0));
     }
 
+    public String removeItem(int number){
+        if(number > queue.size())
+            throw new InvalidCommandStateException("Could not find track");
+        AudioTrackInfo toRemove = getQueue().stream().skip(number - 1).findFirst().orElse(null);
+        if(toRemove == null)
+            throw new InvalidCommandStateException("Could not find track");
+        queue.remove(toRemove);
+        return "Removed: " + number + ". `" + toRemove.getTrack().getInfo().title + "`";
+    }
+
     public void shuffleQueue() {
         List<AudioTrackInfo> oldQueue = new ArrayList<>(getQueue());
         AudioTrackInfo currentTrack = oldQueue.get(0);
@@ -121,7 +131,7 @@ public class TrackManager extends AudioEventAdapter {
         builder.setDescription("`" + info.getTrack().getInfo().title + "`");
         builder.setColor(Color.red);
         builder.addField("Requested:", info.getAuthor().getEffectiveName(), true);
-        builder.addField("Length: ", Main.INSTANCE.musicUtils.getFormattedLength(track.getInfo().length), true);
+        builder.addField("Length: ", Main.INSTANCE.musicUtils.getFormattedTime(track.getInfo().length), true);
         builder.addField("UpNext:", upNext != null ? upNext.getTrack().getInfo().title : "Nothing", true);
         builder.setFooter("Created By " + MessageUtils.Author, MessageUtils.Author_Image);
         info.getChannel().sendMessage(builder.build()).queue();
