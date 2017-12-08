@@ -22,7 +22,7 @@ public class CleanCommand extends Command {
         String selected = "all";
         Stream<Message> history = event.getChannel().getIterableHistory().complete().stream().filter(message -> !message.equals(event.getMessage()));
         if (args.length <= 0)
-            throw new InvalidCommandArgumentException("Usage: .Clean <Amount(default 100)> <all/commands/@User>*");
+            throw new InvalidCommandArgumentException("Usage: .Clean <Amount(default 100)>* <all/commands/@User>*");
 
         if (args.length > 1) {
             selected = args[1];
@@ -44,7 +44,7 @@ public class CleanCommand extends Command {
             if (selected.startsWith("@")) {
                 toDelete = history.filter(message -> message.getAuthor().equals(event.getMessage().getMentionedUsers().get(0))).limit(amount).collect(Collectors.toList());
             } else
-                throw new InvalidCommandArgumentException("Usage: .Clean <Amount> <all/commands/@User>*");
+                throw new InvalidCommandArgumentException("Usage: .Clean <Amount(default 100)>* <all/commands/@User>*");
             if (toDelete.isEmpty()) {
                 throw new InvalidCommandStateException("That user has not posted any messages in that channel");
             }
