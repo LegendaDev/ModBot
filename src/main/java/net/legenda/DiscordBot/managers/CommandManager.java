@@ -32,8 +32,8 @@ public class CommandManager {
         Guild guild = event.getGuild();
         User user = event.getAuthor();
         TextChannel channel = event.getTextChannel();
-        if (msg.getContent().startsWith(Main.INSTANCE.cmdPrefix)) {
-            String message = msg.getContent().substring(1);
+        if (msg.getContentDisplay().startsWith(Main.INSTANCE.cmdPrefix)) {
+            String message = msg.getContentDisplay().substring(1);
             String[] args = message.split(" ");
             if (!message.isEmpty()) {
                 for (Command cmd : commands.values()) {
@@ -93,9 +93,9 @@ public class CommandManager {
     }
 
     public boolean isCommand(Message msg) {
-        if (!msg.getContent().startsWith(Main.INSTANCE.cmdPrefix))
+        if (!msg.getContentDisplay().startsWith(Main.INSTANCE.cmdPrefix))
             return false;
-        String message = msg.getContent().substring(1);
+        String message = msg.getContentDisplay().substring(1);
         String[] args = message.split(" ");
         for (Command cmd : commands.values()) {
             if (cmd.getName().equalsIgnoreCase(args[0])) {

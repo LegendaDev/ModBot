@@ -8,6 +8,7 @@ import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,14 +28,10 @@ public class UnbanCommand extends Command {
         if (m.find()) {
             String name = input.split("#")[0];
             String descriminator = input.split("#")[1];
-            event.getGuild().getBans().queue(bans -> {
-                User toUnbanDescrim = bans.stream().filter(user -> user.getName().equalsIgnoreCase(name) && user.getDiscriminator().equalsIgnoreCase(descriminator)).findFirst().orElse(null);
-                if (toUnbanDescrim != null) {
-                    guildController.unban(toUnbanDescrim).queue();
-                    sendEmbedMessage("Unbanned User: " + toUnbanDescrim.getAsMention(), event.getTextChannel(), false);
-                } else {
-                    throw new InvalidCommandArgumentException("User " + input + " is not banned");
-                }
+            event.getGuild().getBanList().queue(bans -> {
+                User toUnbanDescrim = Objects.requireNonNull(bans.stream().filter(ban -> ban.getUser().getName().equalsIgnoreCase(name) && ban.getUser().getDiscriminator().equalsIgnoreCase(descriminator)).findFirst().orElse(null)).getUser();
+                guildController.unban(toUnbanDescrim).queue();
+                sendEmbedMessage("Unbanned User: " + toUnbanDescrim.getAsMention(), event.getTextChannel(), false);
             });
         } else {
             User toUnbanID = Main.jdaBot.getUserById(input);

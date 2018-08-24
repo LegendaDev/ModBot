@@ -16,7 +16,7 @@ public class BanCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         String banReason = "";
-        String[] arguments = event.getMessage().getRawContent().replaceAll("<@.*?>", "").split(" ");
+        String[] arguments = event.getMessage().getContentRaw().replaceAll("<@.*?>", "").split(" ");
 
         if (args.length == 0) {
             throw new InvalidCommandArgumentException("Usage: .Ban <@User (As many as you want)> <Reason>*");
