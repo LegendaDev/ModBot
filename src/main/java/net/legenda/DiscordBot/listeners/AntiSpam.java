@@ -12,12 +12,11 @@ public class AntiSpam extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        List<Message> history = event.getTextChannel().getIterableHistory().complete().stream().limit(3).filter(msg -> !msg.equals(event.getMessage())).collect(Collectors.toList());
+        List<Message> history = event.getTextChannel().getIterableHistory().complete().stream().limit(6).filter(msg -> !msg.equals(event.getMessage())).collect(Collectors.toList());
         int spam = history.stream().filter(message -> message.getAuthor().equals(event.getAuthor()) && !message.getAuthor().isBot()).filter(msg -> (event.getMessage().getCreationTime().toEpochSecond() - msg.getCreationTime().toEpochSecond()) < 2).collect(Collectors.toList()).size();
-        if(spam == 1){
-            Command.sendErrorMessage("Please leave 2 seconds between messages, " + event.getAuthor().getAsMention(), event.getChannel(), true);
+        if(spam <= 3 && spam > 2) {
+            Command.sendErrorMessage("Please leave 2 seconds between messages, " + event.getAuthor().getAsMention(), event.getTextChannel(), true);
             event.getMessage().delete().queue();
-
         }
     }
 
