@@ -27,10 +27,12 @@ public class NowPlayingCommand extends Command {
             AudioTrackInfo upNext = Main.INSTANCE.musicUtils.getTrackManager(guild).getQueue().stream().filter(audio -> !audio.getTrack().equals(track)).findFirst().orElse(null);
             assert info != null;
             builder.setAuthor("Now Playing:", info.getTrack().getInfo().uri, info.getAuthor().getUser().getAvatarUrl());
-            builder.setDescription("`" + info.getTrack().getInfo().title + "`");
+            String position = Main.INSTANCE.musicUtils.getFormattedTime(info.getTrack().getPosition());
+            String length = Main.INSTANCE.musicUtils.getFormattedTime(info.getTrack().getInfo().length);
+            builder.setDescription("`" + info.getTrack().getInfo().title + "`\n" +
+                    "");
             builder.setColor(Color.red);
             builder.addField("Requested:", info.getAuthor().getEffectiveName(), true);
-            builder.addField("Length: ", Main.INSTANCE.musicUtils.getFormattedLength(track.getInfo().length), true);
             builder.addField("UpNext:", upNext != null ? upNext.getTrack().getInfo().title : "Nothing", true);
             builder.setFooter("Created By " + MessageUtils.Author, MessageUtils.Author_Image);
 

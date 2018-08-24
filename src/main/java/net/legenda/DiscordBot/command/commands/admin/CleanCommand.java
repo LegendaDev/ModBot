@@ -18,21 +18,20 @@ public class CleanCommand extends Command {
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
-        int amount;
+        int amount = 100;
         String selected = "all";
         Stream<Message> history = event.getChannel().getIterableHistory().complete().stream().filter(message -> !message.equals(event.getMessage()));
-        if (args.length <= 0)
-            throw new InvalidCommandArgumentException("Usage: .Clean <Amount(default 100)>* <all/commands/@User>*");
-
         if (args.length > 1) {
             selected = args[1];
         }
-        try {
-            amount = Integer.parseInt(args[0]);
-        } catch (Exception e){
-            amount = 100;
-            selected = args[0];
+        if(args.length > 0) {
+            try {
+                amount = Integer.parseInt(args[0]);
+            } catch (Exception e) {
+                selected = args[0];
+            }
         }
+
         if (amount > 100 || amount < 1)
             throw new InvalidCommandArgumentException("Enter a number between 1 - 100, inclusively");
         List<Message> toDelete;

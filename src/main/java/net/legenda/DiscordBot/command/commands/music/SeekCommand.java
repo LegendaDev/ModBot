@@ -17,15 +17,25 @@ public class SeekCommand extends Command {
         if(args.length < 1)
             throw new InvalidCommandArgumentException("Usage: .Seek <time:stamp>");
         String arg = args[0];
-        String regex = "(?:\\d?\\d):(?:[012345]\\d)";
-        Long time;
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(arg);
-        if (m.find()){
+        String regex1 = "(?:\\d?\\d):(?:[012345]\\d)";
+        String regex2 = "(?:\\d?\\d):(?:[012345]\\d):(?:[012345]\\d)";
+        long time;
+        Pattern pattern1 = Pattern.compile(regex1);
+        Pattern pattern2 = Pattern.compile(regex2);
+        Matcher match1 = pattern1.matcher(arg);
+        Matcher match2 = pattern2.matcher(arg);
+        if (match1.find()){
             String minutes = arg.split(":")[0];
             String seconds = arg.split(":")[1];
             time = Long.parseLong(minutes) * 60000 + Long.parseLong(seconds) * 1000;
-        } else {
+
+        } else if (match2.find()) {
+            String hours = arg.split(":")[0];
+            String minutes = arg.split(":")[1];
+            String seconds = arg.split(":")[2];
+            System.out.println(hours + ":" + minutes + ":" + seconds);
+            time = Long.parseLong(hours) * 3600000 + Long.parseLong(minutes) * 60000 + Long.parseLong(seconds) * 1000;
+        }  else {
             throw new InvalidCommandArgumentException("Must be a time stamp in format minutes:seconds");
         }
         sendMessage(":mag: Seeked: `" + arg + "`", event.getTextChannel());

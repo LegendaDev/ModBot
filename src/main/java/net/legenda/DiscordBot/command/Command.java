@@ -20,7 +20,6 @@ public abstract class Command {
     private final Permission perm = getClass().getAnnotation(cmdInfo.class).permission();
     private final String[] alias = getClass().getAnnotation(cmdInfo.class).alias();
 
-
     /**
      * @param args  = The given arguments of the command
      * @param event = The MessageEvent

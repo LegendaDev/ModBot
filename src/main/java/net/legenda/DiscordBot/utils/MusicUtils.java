@@ -69,7 +69,7 @@ public class MusicUtils {
             public void trackLoaded(AudioTrack audioTrack) {
                 TrackManager manager = getTrackManager(guild);
                 manager.queue(audioTrack, author, channel, top);
-                if (getTrackManager(guild).getQueue().size() != 1){
+                if (getTrackManager(guild).getQueue().size() != 1) {
                     sendMessage(audioTrack, msg, channel);
                 }
             }
@@ -83,15 +83,15 @@ public class MusicUtils {
                 AudioTrack audioTrack = playlist.get(0);
                 if (identifier.startsWith("ytsearch:")) {
                     manager.queue(audioTrack, author, channel, top);
-                    if (getTrackManager(guild).getQueue().size() != 1){
+                    if (getTrackManager(guild).getQueue().size() != 1) {
                         sendMessage(audioTrack, msg, channel);
                     }
                 } else {
-                    for(AudioTrack track : playlist){
+                    for (AudioTrack track : playlist) {
                         manager.queue(track, author, channel, top);
                     }
-                    if (getTrackManager(guild).getQueue().size() != 1){
-                        sendMessage(audioTrack, msg, channel);
+                    if (getTrackManager(guild).getQueue().size() != 1) {
+                        sendPlaylistMessage(audioPlaylist, msg, channel);
                     }
                 }
             }
@@ -119,7 +119,7 @@ public class MusicUtils {
         AudioTrackInfo current = Queue.stream().findFirst().orElse(null);
         AudioTrackInfo next = Queue.isEmpty() ? null : Queue.get(position - 1);
         String skippedTrack = position == 1 ? (current != null ? current.getTrack().getInfo().title : "") : next != null ? next.getTrack().getInfo().title : "NONE";
-        channel.sendMessage(":track_next: Skipped" + (position != 1 ? " To: `" + skippedTrack  + "`" : ": `" + skippedTrack + "`")).queue();
+        channel.sendMessage(":track_next: Skipped" + (position != 1 ? " To: `" + skippedTrack + "`" : ": `" + skippedTrack + "`")).queue();
         LoopCommand.endRepeat(guild);
         getAudioPlayer(guild).stopTrack();
 
@@ -127,6 +127,8 @@ public class MusicUtils {
 
     public void seek(Guild guild, Long pos) {
         AudioTrack track = getAudioPlayer(guild).getPlayingTrack();
+        if(track == null)
+            throw new InvalidCommandStateException("No song is playing");
         if (pos > track.getInfo().length)
             throw new InvalidCommandStateException("Cannot seek longer than the current song!");
         track.setPosition(pos);
@@ -170,30 +172,46 @@ public class MusicUtils {
         channel.sendMessage(builder.build()).queue();
     }
 
-    private void sendPlaylistMessage(AudioPlaylist playlist, Message msg, TextChannel channel){
-
+    private void sendPlaylistMessage(AudioPlaylist playlist, Message msg, TextChannel channel) {
+        if (playlist.getTracks().size() > 1) {
+            EmbedBuilder builder = new EmbedBuilder();
+            AudioTrack audioTrack = playlist.getTracks().get(1);
+            builder.setAuthor("Added Playlist:", audioTrack.getInfo().uri, msg.getAuthor().getAvatarUrl());
+            builder.setColor(Color.getHSBColor(0f, 1f, 1f));
+            builder.setDescription("**Enqueued:**` " + playlist.getTracks().size() + "` \nUse .Queue to see all enqueued songs");
+            channel.sendMessage(builder.build()).queue();
+        }
     }
 
     public String getFormattedTime(Long length) {
-        double lengthDubl = length;
-        double minutes = (lengthDubl / 60000L);
+        double lengthSeconds = (double) length / 1000;
+        double hours = lengthSeconds / 3600;
+        double minutes = (hours - Math.floor(hours)) * 60;
         double seconds = (minutes - Math.floor(minutes)) * 60;
         String secondStr = (int) seconds + "";
         if (secondStr.toCharArray().length < 2) {
             secondStr = "0" + secondStr;
         }
-        return (int) minutes + ":" + secondStr;
+        if(hours > 1){
+            String minutesStr = (int) minutes + "";
+            if(minutesStr.toCharArray().length < 2){
+                minutesStr = "0" + minutesStr;
+            }
+            return (int) hours + ":" + minutesStr + ":" + secondStr;
+        } else {
+            return (int) minutes + ":"+ secondStr;
+        }
+
     }
 
     private String getPositionInQueue(AudioTrack audioTrack, Guild guild) {
-        int i = 1;
-        for (AudioTrackInfo track : players.get(guild).getValue().getQueue()) {
+        int i = 0;
+        for (AudioTrackInfo track : getTrackManager(guild).getQueue()) {
             if (track.getTrack().equals(audioTrack)) {
                 break;
             }
             i++;
         }
-        i -= 1;
         return i + "";
     }
 

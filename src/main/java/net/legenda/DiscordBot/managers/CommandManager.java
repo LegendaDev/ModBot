@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 import net.legenda.DiscordBot.command.commands.admin.*;
 import net.legenda.DiscordBot.command.commands.fun.PingCommand;
+import net.legenda.DiscordBot.command.commands.fun.RandomCommand;
 import net.legenda.DiscordBot.command.commands.fun.RollCommand;
 import net.legenda.DiscordBot.command.commands.misc.DevelopersCommand;
 import net.legenda.DiscordBot.command.commands.misc.HelpCommand;
@@ -34,18 +35,20 @@ public class CommandManager {
         if (msg.getContent().startsWith(Main.INSTANCE.cmdPrefix)) {
             String message = msg.getContent().substring(1);
             String[] args = message.split(" ");
-            for (Command cmd : commands.values()) {
-                if (cmd.getName().equalsIgnoreCase(args[0]) || Arrays.stream(cmd.getAlias()).anyMatch(alias -> alias.equalsIgnoreCase(args[0]))) {
-                    if (hasPermission(cmd, guild, channel, user)) {
-                        if (hasRole(cmd, guild, user) || PermissionUtil.checkPermission(channel, guild.getMember(user), Permission.ADMINISTRATOR)) {
-                            String[] arguments = Arrays.copyOfRange(args, 1, args.length);
-                            cmd.execute(arguments, event);
-                            return;
+            if (!message.isEmpty()) {
+                for (Command cmd : commands.values()) {
+                    if (cmd.getName().equalsIgnoreCase(args[0]) || Arrays.stream(cmd.getAlias()).anyMatch(alias -> alias.equalsIgnoreCase(args[0]))) {
+                        if (hasPermission(cmd, guild, channel, user)) {
+                            if (hasRole(cmd, guild, user) || PermissionUtil.checkPermission(channel, guild.getMember(user), Permission.ADMINISTRATOR)) {
+                                String[] arguments = Arrays.copyOfRange(args, 1, args.length);
+                                cmd.execute(arguments, event);
+                                return;
+                            } else {
+                                throw new IllegalCommandAccessException("You don't have the required role (" + cmd.getRole() + ")");
+                            }
                         } else {
-                            throw new IllegalCommandAccessException("You don't have the required role (" + cmd.getRole() + ")");
+                            throw new IllegalCommandAccessException("You don't have the required permission (" + cmd.getPermission().toString() + ")");
                         }
-                    } else {
-                        throw new IllegalCommandAccessException("You don't have the required permission (" + cmd.getPermission().toString() + ")");
                     }
                 }
             }
@@ -63,6 +66,7 @@ public class CommandManager {
 
         //Fun
         commands.put("PingCommand", new PingCommand());
+        commands.put("RandomCommand", new RandomCommand());
         commands.put("RollCommand", new RollCommand());
 
         //Misc
@@ -72,6 +76,7 @@ public class CommandManager {
         //Music
         commands.put("ClearCommand", new ClearCommand());
         commands.put("PlayCommand", new PlayCommand());
+        commands.put("PlayTopCommand", new PlayTopCommand());
         commands.put("JoinCommand", new JoinCommand());
         commands.put("QueueCommand", new QueueCommand());
         commands.put("LeaveCommand", new LeaveCommand());
@@ -82,6 +87,7 @@ public class CommandManager {
         commands.put("SkipToCommand", new SkipToCommand());
         commands.put("ShuffleCommand", new ShuffleCommand());
         commands.put("StopCommand", new StopCommand());
+        commands.put("RemoveCommand", new RemoveCommand());
         commands.put("ResumeCommand", new ResumeCommand());
 
     }

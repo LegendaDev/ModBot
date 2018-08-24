@@ -12,7 +12,7 @@ import java.util.Map;
 @Command.cmdInfo(name = "Loop", description = "Loops current track", type = Command.Type.Music, role = "DJ", alias = {"Repeat"})
 public class LoopCommand extends Command {
 
-    private static HashMap<Guild, Integer> times = new HashMap<>();
+    private final static HashMap<Guild, Integer> times = new HashMap<>();
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
