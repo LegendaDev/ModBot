@@ -12,6 +12,7 @@ import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 import net.legenda.DiscordBot.utils.MusicUtils;
 
 import java.awt.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Command.cmdInfo(name = "Queue", description = "Lists the current queue", type = Command.Type.Music)
@@ -19,6 +20,10 @@ public class QueueCommand extends Command {
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
+        int page = 1;
+        if (args.length > 0) {
+            page = Integer.parseInt(args[0]);
+        }
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle("Queue:");
         builder.setColor(Color.red);
@@ -30,18 +35,28 @@ public class QueueCommand extends Command {
         AudioTrackInfo info = manager.getQueue().stream().findFirst().orElse(null);
         Member user = info == null ? null : info.getAuthor();
         StringBuilder queue = new StringBuilder();
-        if(info == null)
+        if (info == null)
             throw new InvalidCommandStateException("The Queue is empty");
-        int i = 1;
-        for (AudioTrackInfo track : manager.getQueue().stream().skip(1).collect(Collectors.toList())) {
-            if (i < 5)
-                queue.append(i).append(".`  ").append(track.getTrack().getInfo().title).append("` Requested By `").append(user.getEffectiveName()).append("`\n");
-            else
-                break;
-            i++;
+        List<AudioTrackInfo> tracks = manager.getQueue().stream().skip(1).collect(Collectors.toList());
+        double numTracks = tracks.size() + 1;
+        int pages = numTracks / 5 > (int) numTracks / 5 ? (int) numTracks / 5 + 1 : (int) numTracks / 5;
+        if (page > pages || page < 1) {
+            throw new InvalidCommandStateException("Invalid Page Number");
         }
-        builder.setDescription("__Currently Playing:__\n`" + player.getPlayingTrack().getInfo().title + "` Requested By` " + user.getEffectiveName() + "`\n"
-                + "\n__Coming up__:\n" + queue.toString() + "\n\n" + "**" + manager.getQueue().size() + " Songs**");
+        if (numTracks != 1)
+            for (int i = page * 5 - 4; i <= page * 5; i++) {
+                if (i >= numTracks)
+                    break;
+                queue.append(i).append(".     `").append(tracks.get(i - 1).getTrack().getInfo().title).append("` Requested By `").append(user.getEffectiveName()).append("`\n");
+            }
+        StringBuilder description = new StringBuilder();
+        if (page == 1)
+            description.append("__Currently Playing:__\n`").append(player.getPlayingTrack().getInfo().title).append("` Requested By` ").append(user.getEffectiveName()).append("`\n");
+        description.append("\n__Coming up__:\n").append(queue.toString()).append("\n\n").append("**")
+                .append(tracks.size()).append(" Songs")
+                .append(" : ").append(pages).append(" Pages**");
+
+        builder.setDescription(description.toString());
         event.getTextChannel().sendMessage(builder.build()).queue();
     }
 }
