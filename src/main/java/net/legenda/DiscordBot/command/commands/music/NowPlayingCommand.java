@@ -12,6 +12,7 @@ import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 import net.legenda.DiscordBot.utils.MessageUtils;
 
 import java.awt.*;
+import java.util.Objects;
 
 @Command.cmdInfo(name = "NowPlaying", description = "Sends Info On the Current Track", type = Command.Type.Music, alias = {"np"})
 public class NowPlayingCommand extends Command {
@@ -22,23 +23,33 @@ public class NowPlayingCommand extends Command {
         TrackManager trackManager = Main.INSTANCE.musicUtils.getTrackManager(guild);
         AudioTrack track = Main.INSTANCE.musicUtils.getAudioPlayer(guild).getPlayingTrack();
         if (track != null) {
-            AudioTrackInfo info = trackManager.getQueue().stream().findFirst().orElse(null);
+            AudioTrackInfo info = Objects.requireNonNull(trackManager.getQueue().stream().findFirst().orElse(null));
             EmbedBuilder builder = new EmbedBuilder();
             AudioTrackInfo upNext = Main.INSTANCE.musicUtils.getTrackManager(guild).getQueue().stream().filter(audio -> !audio.getTrack().equals(track)).findFirst().orElse(null);
-            assert info != null;
             builder.setAuthor("Now Playing:", info.getTrack().getInfo().uri, info.getAuthor().getUser().getAvatarUrl());
-            String position = Main.INSTANCE.musicUtils.getFormattedTime(info.getTrack().getPosition());
-            String length = Main.INSTANCE.musicUtils.getFormattedTime(info.getTrack().getInfo().length);
-            builder.setDescription("`" + info.getTrack().getInfo().title + "`\n" +
-                    "");
+            builder.setDescription("`" + info.getTrack().getInfo().title + "`\n\n`" + createSlider(track) + "`\n");
             builder.setColor(Color.red);
             builder.addField("Requested:", info.getAuthor().getEffectiveName(), true);
             builder.addField("UpNext:", upNext != null ? upNext.getTrack().getInfo().title : "Nothing", true);
             builder.setFooter("Created By " + MessageUtils.Author, MessageUtils.Author_Image);
-
             event.getTextChannel().sendMessage(builder.build()).queue();
             return;
         }
         throw new InvalidCommandStateException("There Is No Track Currently Playing");
+    }
+
+    private String createSlider(AudioTrack track) {
+        long position = track.getPosition();
+        long length = track.getInfo().length;
+        StringBuilder slider = new StringBuilder();
+        slider.append(Main.INSTANCE.musicUtils.getFormattedTime(position)).append(" ");
+        for (int i = 0; i < 30; i++) {
+            if (i != (int) (30 * ((double) position / (double) length)))
+                slider.append("▬");
+            else
+                slider.append("\uD83D\uDD18");
+        }
+        slider.append(" ").append(Main.INSTANCE.musicUtils.getFormattedTime(length));
+        return slider.toString();
     }
 }
