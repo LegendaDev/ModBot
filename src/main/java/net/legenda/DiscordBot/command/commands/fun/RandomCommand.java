@@ -23,8 +23,10 @@ public class RandomCommand extends Command {
         String message = args[0];
         Guild guild = event.getGuild();
         List<Member> members = guild.getMembers().stream().filter(member -> !member.getOnlineStatus().equals(OnlineStatus.OFFLINE)).filter(member -> !member.equals(event.getMember())).filter(member -> !member.getUser().isBot()).collect(Collectors.toList());
+        if (members.isEmpty())
+            throw new InvalidCommandStateException("Search yielded no results");
         Member random = members.get(new Random().nextInt(members.size()));
-        if(random == null)
+        if (random == null)
             throw new InvalidCommandStateException("Search yielded no results");
         sendEmbedMessage(random.getAsMention() + " " + message, event.getTextChannel(), false);
 
