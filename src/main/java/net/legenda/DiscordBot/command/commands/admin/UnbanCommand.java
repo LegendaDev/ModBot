@@ -1,20 +1,13 @@
 package net.legenda.DiscordBot.command.commands.admin;
 
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.managers.GuildController;
-import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
-import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Command.cmdInfo(name = "Unban", description = "Unbans a user from the server", type = Command.Type.Admin, permission = Permission.BAN_MEMBERS)
 public class UnbanCommand extends Command {
