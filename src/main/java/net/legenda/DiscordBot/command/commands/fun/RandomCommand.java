@@ -8,6 +8,7 @@ import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ public class RandomCommand extends Command {
         if (args.length == 0) {
             throw new InvalidCommandArgumentException("Usage: .Random <Message>*");
         }
-        String message = args[0];
+        String message = String.join(" ", args);
         Guild guild = event.getGuild();
         List<Member> members = guild.getMembers().stream().filter(member -> !member.getOnlineStatus().equals(OnlineStatus.OFFLINE)).filter(member -> !member.equals(event.getMember())).filter(member -> !member.getUser().isBot()).collect(Collectors.toList());
         if (members.isEmpty())
@@ -29,6 +30,5 @@ public class RandomCommand extends Command {
         if (random == null)
             throw new InvalidCommandStateException("Search yielded no results");
         sendEmbedMessage(random.getAsMention() + " " + message, event.getTextChannel(), false);
-
     }
 }
