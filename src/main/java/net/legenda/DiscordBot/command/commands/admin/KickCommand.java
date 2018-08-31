@@ -15,22 +15,19 @@ public class KickCommand extends Command {
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
-        String reason;
         String[] arguments = event.getMessage().getContentRaw().replaceAll("<@.*?>", "").split(" ");
-
-        if (arguments.length <= 1) {
+        if (arguments.length <= 1)
             throw new InvalidCommandArgumentException("Usage: .Kick <@User> <Reason>*");
-        }
-        reason = String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length));
 
+        String reason = String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length));
         GuildController guildController = new GuildController(event.getGuild());
         User user = event.getMessage().getMentionedUsers().stream().findFirst().orElse(null);
         Member toKick = event.getGuild().getMember(user);
         if (toKick != null) {
             guildController.kick(toKick, reason).queue();
             sendEmbedMessage("Kicked user: " + toKick.getAsMention(), event.getTextChannel(), false);
-        } else {
+        } else
             throw new InvalidCommandArgumentException("Could not find User");
-        }
+
     }
 }
