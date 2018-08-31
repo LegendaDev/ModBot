@@ -1,14 +1,17 @@
 package net.legenda.DiscordBot.command.commands.admin;
 
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.managers.GuildController;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
+import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,24 +26,24 @@ public class UnbanCommand extends Command {
         GuildController guildController = new GuildController(event.getGuild());
         String input = args[0];
         String regex = ".*#[0-9]{4}";
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(input);
-        if (m.find()) {
+        AtomicReference<User> toUnban = new AtomicReference<>(null);
+        if (input.matches(regex)) {
             String name = input.split("#")[0];
             String descriminator = input.split("#")[1];
-            event.getGuild().getBanList().queue(bans -> {
-                User toUnbanDescrim = Objects.requireNonNull(bans.stream().filter(ban -> ban.getUser().getName().equalsIgnoreCase(name) && ban.getUser().getDiscriminator().equalsIgnoreCase(descriminator)).findFirst().orElse(null)).getUser();
-                guildController.unban(toUnbanDescrim).queue();
-                sendEmbedMessage("Unbanned User: " + toUnbanDescrim.getAsMention(), event.getTextChannel(), false);
-            });
-        } else {
-            User toUnbanID = Main.jdaBot.getUserById(input);
-            if (toUnbanID != null) {
-                guildController.unban(toUnbanID).queue();
-                sendEmbedMessage("Unbanned User: " + toUnbanID.getAsMention(), event.getTextChannel(), false);
-            } else {
+            event.getGuild().getBanList().queue(bans -> bans.stream().filter(ban -> ban.getUser().getName().equalsIgnoreCase(name) && ban.getUser().getDiscriminator().equalsIgnoreCase(descriminator)).findFirst().ifPresent(banned -> toUnban.set(banned.getUser())));
+            if (toUnban.get() == null)
+                throw new InvalidCommandArgumentException("Could not find user: " + input);
+            guildController.unban(toUnban.get()).queue();
+            sendEmbedMessage("Unbanned User: " + toUnban.get().getAsMention(), event.getTextChannel(), false);
+        } else if (input.matches("[0-9]+") && input.length() >= 17) {
+            toUnban.set(Main.jdaBot.getUserById(input));
+            if (toUnban.get() == null)
                 throw new InvalidCommandArgumentException("User " + input + " is not banned");
-            }
+            guildController.unban(toUnban.get()).queue();
+            sendEmbedMessage("Unbanned User: " + toUnban.get().getAsMention(), event.getTextChannel(), false);
+
+        } else {
+            throw new InvalidCommandArgumentException("Enter a valid UserID or enter USER#0000");
         }
     }
 }
