@@ -14,7 +14,7 @@ public class RollCommand extends Command {
             try {
                 sides = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
-                throw new InvalidCommandStateException("Number of sides of the dice must be a number");
+                throw new InvalidCommandStateException("Number of sides of the dice must be a number (Less than or equal to " + Integer.MAX_VALUE + ")");
             }
         int output = (int) Math.round(Math.random() * (sides - 1) + 1);
         sendEmbedMessage("Rolled a " + output + " (" + sides + ")", event.getTextChannel(), false);
