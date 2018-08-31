@@ -15,14 +15,14 @@ public class CooldownCommand extends Command {
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
-        if(args.length == 0)
+        if (args.length == 0)
             throw new InvalidCommandArgumentException("Usage: .Cooldown <@User>");
         User toMute = event.getMessage().getMentionedUsers().size() > 0 ? event.getMessage().getMentionedUsers().get(0) : null;
         if (toMute != null) {
             Guild guild = event.getGuild();
-            GuildController guildController = event.getGuild().getController();
+            GuildController guildController = guild.getController();
             Role muteRole = guild.getRoles().stream().filter(role -> role.getName().equalsIgnoreCase("Cooldown")).findFirst().orElse(null);
-            if(muteRole == null)
+            if (muteRole == null)
                 throw new InvalidCommandStateException("You need a role called Cooldown to use this");
             guildController.removeRolesFromMember(guild.getMember(toMute), guild.getMember(toMute).getRoles()).queue();
             guildController.addSingleRoleToMember(guild.getMember(toMute), muteRole).queue();
