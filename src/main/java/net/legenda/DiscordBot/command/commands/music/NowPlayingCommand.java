@@ -14,7 +14,7 @@ import net.legenda.DiscordBot.utils.MessageUtils;
 import java.awt.*;
 import java.util.Objects;
 
-@Command.cmdInfo(name = "NowPlaying", description = "Sends Info On the Current Track", type = Command.Type.Music, alias = {"np"})
+@Command.cmdInfo(name = "NowPlaying", description = "Sends Info About the Current Track", type = Command.Type.Music, alias = {"np"})
 public class NowPlayingCommand extends Command {
 
     @Override
@@ -43,8 +43,8 @@ public class NowPlayingCommand extends Command {
         long length = track.getInfo().length;
         StringBuilder slider = new StringBuilder();
         slider.append(Main.INSTANCE.musicUtils.getFormattedTime(position)).append(" ");
-        for (int i = 0; i < 30; i++) {
-            if (i != (int) (30 * ((double) position / (double) length)))
+        for (int i = 0; i < 35; i++) {
+            if (i != (int) (35 * ((double) position / (double) length)))
                 slider.append("▬");
             else
                 slider.append("\uD83D\uDD18");
