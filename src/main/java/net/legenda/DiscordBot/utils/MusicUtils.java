@@ -11,9 +11,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.*;
 import net.legenda.DiscordBot.Main;
-import net.legenda.DiscordBot.audioCore.AudioTrackInfo;
-import net.legenda.DiscordBot.audioCore.PlayerSendHandler;
-import net.legenda.DiscordBot.audioCore.TrackManager;
+import net.legenda.DiscordBot.audio.AudioTrackInfo;
+import net.legenda.DiscordBot.audio.PlayerSendHandler;
+import net.legenda.DiscordBot.managers.TrackManager;
 import net.legenda.DiscordBot.command.commands.music.LoopCommand;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 

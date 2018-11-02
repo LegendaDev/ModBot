@@ -1,4 +1,4 @@
-package net.legenda.DiscordBot.audioCore;
+package net.legenda.DiscordBot.managers;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.legenda.DiscordBot.Main;
+import net.legenda.DiscordBot.audio.AudioTrackInfo;
 import net.legenda.DiscordBot.command.commands.music.LoopCommand;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 import net.legenda.DiscordBot.utils.MessageUtils;

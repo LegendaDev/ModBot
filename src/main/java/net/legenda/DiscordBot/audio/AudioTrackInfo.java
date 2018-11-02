@@ -1,4 +1,4 @@
-package net.legenda.DiscordBot.audioCore;
+package net.legenda.DiscordBot.audio;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.entities.Member;
@@ -10,7 +10,7 @@ public class AudioTrackInfo {
     private final Member author;
     private final TextChannel channel;
 
-    AudioTrackInfo(AudioTrack track, Member author, TextChannel channel) {
+    public AudioTrackInfo(AudioTrack track, Member author, TextChannel channel) {
         this.track = track;
         this.author = author;
         this.channel = channel;
