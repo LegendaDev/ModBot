@@ -24,7 +24,7 @@ public class CleanCommand extends Command {
         if (args.length > 1) {
             selected = args[1];
         }
-        if(args.length > 0) {
+        if (args.length > 0) {
             try {
                 amount = Integer.parseInt(args[0]);
             } catch (Exception e) {
