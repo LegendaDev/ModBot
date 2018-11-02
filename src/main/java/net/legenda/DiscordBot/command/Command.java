@@ -75,7 +75,7 @@ public abstract class Command {
         channel.sendMessage(msg).queue();
     }
 
-    protected static void sendEmbedMessage(String msg, TextChannel channel, boolean delete) {
+    public static void sendEmbedMessage(String msg, TextChannel channel, boolean delete) {
         channel.sendMessage(Main.INSTANCE.msgUtil.wrapMessage(msg)).queue(sent -> {
             if (delete)
                 sent.delete().queueAfter(3L, TimeUnit.SECONDS);

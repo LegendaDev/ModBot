@@ -62,6 +62,7 @@ public class CommandManager {
         commands.put("CleanCommand", new CleanCommand());
         commands.put("CooldownCommand", new CooldownCommand());
         commands.put("KickCommand", new KickCommand());
+        commands.put("LogEventCommand", new LogEventCommand());
         commands.put("UnbanCommand", new UnbanCommand());
 
         //Fun
