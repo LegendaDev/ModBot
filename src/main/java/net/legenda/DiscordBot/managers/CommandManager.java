@@ -33,7 +33,7 @@ public class CommandManager {
         User user = event.getAuthor();
         TextChannel channel = event.getTextChannel();
         if (msg.getContentDisplay().startsWith(Main.INSTANCE.cmdPrefix)) {
-            String message = msg.getContentDisplay().substring(1);
+            String message = msg.getContentRaw().substring(1);
             String[] args = message.split(" ");
             if (!message.isEmpty()) {
                 for (Command cmd : commands.values()) {
