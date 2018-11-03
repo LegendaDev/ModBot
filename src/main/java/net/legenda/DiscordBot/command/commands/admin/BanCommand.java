@@ -19,7 +19,7 @@ public class BanCommand extends Command {
         String[] arguments = event.getMessage().getContentRaw().replaceAll("<@.*?>", "").split(" ");
 
         if (args.length == 0) {
-            throw new InvalidCommandArgumentException("Usage: .Ban <@User (As many as you want)> <Reason>*");
+            throw new InvalidCommandArgumentException("Usage: `.Ban <@User (As many as you want)> <Reason>*`");
         }
         if (args.length > 1)
             banReason = String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length));

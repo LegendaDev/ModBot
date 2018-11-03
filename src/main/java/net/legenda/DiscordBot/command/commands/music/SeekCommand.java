@@ -15,7 +15,7 @@ public class SeekCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         if(args.length < 1)
-            throw new InvalidCommandArgumentException("Usage: .Seek <time:stamp>");
+            throw new InvalidCommandArgumentException("Usage: `.Seek <time:stamp>`");
         String arg = args[0];
         String regex1 = "(?:\\d?\\d):(?:[012345]\\d)";
         String regex2 = "(?:\\d?\\d):(?:[012345]\\d):(?:[012345]\\d)";
@@ -33,10 +33,9 @@ public class SeekCommand extends Command {
             String hours = arg.split(":")[0];
             String minutes = arg.split(":")[1];
             String seconds = arg.split(":")[2];
-            System.out.println(hours + ":" + minutes + ":" + seconds);
             time = Long.parseLong(hours) * 3600000 + Long.parseLong(minutes) * 60000 + Long.parseLong(seconds) * 1000;
         }  else {
-            throw new InvalidCommandArgumentException("Must be a time stamp in format minutes:seconds");
+            throw new InvalidCommandArgumentException("Must be a time stamp in format `minutes:seconds`");
         }
         sendMessage(":mag: Seeked: `" + arg + "`", event.getTextChannel());
         Main.INSTANCE.musicUtils.seek(event.getGuild(), time);

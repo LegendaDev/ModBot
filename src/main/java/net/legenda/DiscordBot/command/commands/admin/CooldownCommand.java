@@ -16,7 +16,7 @@ public class CooldownCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         if (args.length == 0)
-            throw new InvalidCommandArgumentException("Usage: .Cooldown <@User>");
+            throw new InvalidCommandArgumentException("Usage: `.Cooldown <@User>`");
         User toMute = event.getMessage().getMentionedUsers().size() > 0 ? event.getMessage().getMentionedUsers().get(0) : null;
         if (toMute != null) {
             Guild guild = event.getGuild();

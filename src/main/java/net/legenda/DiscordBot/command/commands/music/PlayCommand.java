@@ -14,7 +14,7 @@ public class PlayCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         if(args.length < 1){
-            throw new InvalidCommandArgumentException("Usage: .Play (Link/Search Query)");
+            throw new InvalidCommandArgumentException("Usage: `.Play (Link/Search Query)`");
         }
 
         String input = String.join(" ", Arrays.copyOfRange(args, 0, args.length));

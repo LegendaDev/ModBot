@@ -15,7 +15,7 @@ public class UnbanCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         if (args.length == 0)
-            throw new InvalidCommandArgumentException("Usage: .Unban <UserID || USER#0000>");
+            throw new InvalidCommandArgumentException("Usage: `.Unban <UserID || USER#0000>`");
 
         GuildController guildController = new GuildController(event.getGuild());
         String input = args[0];

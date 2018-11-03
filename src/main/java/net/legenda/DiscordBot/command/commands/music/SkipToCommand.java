@@ -11,7 +11,7 @@ public class SkipToCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         if (args.length < 1)
-            throw new InvalidCommandArgumentException("Usage: .SkipTo (Position)");
+            throw new InvalidCommandArgumentException("Usage: `.SkipTo (Position)`");
         int position = Integer.parseInt(args[0]);
         Main.INSTANCE.musicUtils.skipTrack(event.getTextChannel(), position);
     }

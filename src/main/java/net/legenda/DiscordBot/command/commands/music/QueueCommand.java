@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.audio.AudioTrackInfo;
+import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 import net.legenda.DiscordBot.managers.TrackManager;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
@@ -22,7 +23,11 @@ public class QueueCommand extends Command {
     public void execute(String[] args, MessageReceivedEvent event) {
         int page = 1;
         if (args.length > 0) {
-            page = Integer.parseInt(args[0]);
+            try {
+                page = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                throw new InvalidCommandArgumentException("Usage: `.Queue <Page Number>`");
+            }
         }
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle("Queue:");

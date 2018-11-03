@@ -17,7 +17,7 @@ public class KickCommand extends Command {
     public void execute(String[] args, MessageReceivedEvent event) {
         String[] arguments = event.getMessage().getContentRaw().replaceAll("<@.*?>", "").split(" ");
         if (arguments.length <= 1)
-            throw new InvalidCommandArgumentException("Usage: .Kick <@User> <Reason>*");
+            throw new InvalidCommandArgumentException("Usage: `.Kick <@User> <Reason>*`");
 
         String reason = String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length));
         GuildController guildController = new GuildController(event.getGuild());

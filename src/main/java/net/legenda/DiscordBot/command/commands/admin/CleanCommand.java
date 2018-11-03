@@ -23,7 +23,7 @@ public class CleanCommand extends Command {
         String selected = "all";
         Stream<Message> history = event.getChannel().getIterableHistory().complete().stream().filter(message -> !message.equals(event.getMessage()));
         if (args.length == 0)
-            throw new InvalidCommandArgumentException("Usage: .Clean <all/commands/\"message\">* <Amount(default 100)>* <@User>*");
+            throw new InvalidCommandArgumentException("Usage: `.Clean <all/commands/\"message\">* <Amount(default 100)>* <@User>*`");
         try {
             if (strippedArgs.length == 1)
                 amount = Integer.parseInt(strippedArgs[0]);
@@ -50,7 +50,7 @@ public class CleanCommand extends Command {
         } else if (args[0].startsWith("<@")) {
             toDelete = history.limit(amount).collect(Collectors.toList());
         } else {
-            throw new InvalidCommandArgumentException("Usage: .Clean <all/commands/\"message\">* <Amount(default 100)>* <@User>*");
+            throw new InvalidCommandArgumentException("Usage: `.Clean <all/commands/\"message\">* <Amount(default 100)>* <@User>*`");
         }
 
         try {

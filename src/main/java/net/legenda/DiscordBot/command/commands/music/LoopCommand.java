@@ -25,7 +25,7 @@ public class LoopCommand extends Command {
                 input = Integer.parseInt(args[0]);
 
             } catch (NumberFormatException e) {
-                throw new InvalidCommandStateException("Usage: .Loop (Amount) || .Loop to toggle");
+                throw new InvalidCommandStateException("Usage: `.Loop (Amount)` \n`.Loop to toggle`");
             }
             times = input + 1;
             setGuildRepeat(guild, times);

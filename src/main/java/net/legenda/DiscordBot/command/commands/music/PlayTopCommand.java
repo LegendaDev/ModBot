@@ -8,13 +8,13 @@ import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 import java.util.Arrays;
 
 
-@Command.cmdInfo(name = "PlayTop", description = "Adds a song to the queue", type = Command.Type.Music)
+@Command.cmdInfo(name = "Playtop", description = "Adds a song to the queue", type = Command.Type.Music)
 public class PlayTopCommand extends Command {
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         if(args.length < 1){
-            throw new InvalidCommandArgumentException("Usage: .Play (Link/Search Query)");
+            throw new InvalidCommandArgumentException("Usage: `.Playtop (Link/Search Query)`");
         }
 
         String input = String.join(" ", Arrays.copyOfRange(args, 0, args.length));

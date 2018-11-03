@@ -12,9 +12,14 @@ public class RemoveCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         if(args.length <= 0){
-            throw new InvalidCommandArgumentException("Usage: .Remove (Index in Queue)");
+            throw new InvalidCommandArgumentException("Usage: `.Remove (Index in Queue)`");
         }
-        int number = Integer.parseInt(args[0]);
+        int number;
+        try {
+            number = Integer.parseInt(args[0]);
+        } catch (NumberFormatException e) {
+            throw new InvalidCommandArgumentException("Usage: `.Remove (Index in Queue)`");
+        }
         if(number == 0)
             throw new InvalidCommandStateException("Cannot stop current track, use .skip");
         String message = Main.INSTANCE.musicUtils.remove(event.getGuild(), number);

@@ -40,7 +40,7 @@ public class HelpCommand extends Command {
                     type = Type.Misc;
             }
             if(type == null)
-                throw new InvalidCommandArgumentException("Usage: .help <cmdType>");
+                throw new InvalidCommandArgumentException("Usage: `.help <cmdType>`");
             final Type type2 = type;
             msg.append("__").append(type2.name()).append(" Commands__:\n\n");
             CommandManager.commands.values().stream().filter(cmd -> cmd.getType().equals(type2)).forEach(cmd -> msg.append(cmd.getName()).append(": ").append(cmd.getDescription()).append("\n"));

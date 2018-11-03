@@ -19,7 +19,7 @@ public class RandomCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         if (args.length == 0) {
-            throw new InvalidCommandArgumentException("Usage: .Random <Message>*");
+            throw new InvalidCommandArgumentException("Usage: `.Random <Message>*`");
         }
         String message = String.join(" ", args);
         Guild guild = event.getGuild();
