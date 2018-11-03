@@ -1,6 +1,7 @@
 package net.legenda.DiscordBot.listeners;
 
 import net.dv8tion.jda.core.events.guild.GuildBanEvent;
+import net.dv8tion.jda.core.events.guild.GuildUnbanEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.command.Command;
@@ -13,5 +14,12 @@ public class ModEventsListener extends ListenerAdapter {
             String message = ban.getUser().getAsMention() + " Has Been Banned" + (ban.getReason() == null ? "" : ", Reason: ``" + ban.getReason() + "``");
             Command.sendEmbedMessage(message, event.getGuild().getTextChannelById(preset.getValue()), false);
         })));
+    }
+
+    @Override
+    public void onGuildUnban(GuildUnbanEvent event) {
+        Main.INSTANCE.configManager.presets.entrySet().stream().filter(set -> set.getKey().equals(event.getGuild())).findAny().ifPresent(entry -> entry.getValue().stream().filter(preset -> preset.getKey().equals("LogChannel")).findAny().ifPresent(preset -> {
+            Command.sendEmbedMessage(event.getUser().getAsMention() + " has Been Unbanned", event.getGuild().getTextChannelById(preset.getValue()), false);
+        }));
     }
 }
