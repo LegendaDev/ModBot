@@ -23,10 +23,6 @@ public class CommandManager {
 
     public static final HashMap<String, Command> commands = new LinkedHashMap<>();
 
-    public CommandManager() {
-        initCommands();
-    }
-
     static void execute(MessageReceivedEvent event) {
         Message msg = event.getMessage();
         Guild guild = event.getGuild();
@@ -56,7 +52,7 @@ public class CommandManager {
         }
     }
 
-    private void initCommands() {
+    public void initCommands() {
         //Administrative
         commands.put("BanCommand", new BanCommand());
         commands.put("CleanCommand", new CleanCommand());
