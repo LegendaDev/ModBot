@@ -15,30 +15,30 @@ public class BanCommand extends Command {
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
-        String banReason = "";
         String[] arguments = event.getMessage().getContentRaw().replaceAll("<@.*?>", "").split(" ");
-
-        if (args.length == 0) {
+        if (args.length == 0)
             throw new InvalidCommandArgumentException("Usage: `.Ban <@User (As many as you want)> <Reason>*`");
-        }
-        if (args.length > 1)
-            banReason = String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length));
 
+        String banReason = String.join(" ", Arrays.copyOfRange(arguments, 1, arguments.length));
         GuildController guildController = new GuildController(event.getGuild());
         List<User> toBan = event.getMessage().getMentionedUsers();
         if (!toBan.isEmpty()) {
-            if (!banReason.isEmpty()){
-                String reason = banReason;
-                toBan.forEach(user -> guildController.ban(user, 7, reason).queue());
-            } else {
-                toBan.forEach(user -> guildController.ban(user, 7).queue());
-            }
             StringBuilder banned = new StringBuilder();
-            toBan.forEach(user -> banned.append(" ").append(user.getAsMention()));
-            sendEmbedMessage("Banned:" + banned.toString(), event.getTextChannel(), false);
-
-        } else
-            throw new InvalidCommandArgumentException("Could not find user");
+            StringBuilder notBanned = new StringBuilder();
+            toBan.forEach(user -> {
+                try {
+                    guildController.ban(user, 7, banReason).queue();
+                    banned.append(" ").append(user.getAsMention());
+                } catch (Exception e) {
+                    notBanned.append(" ").append(user.getAsMention());
+                }
+            });
+            if (notBanned.length() > 0)
+                sendErrorMessage("Unable To Ban: " + notBanned.toString(), event.getTextChannel(), false);
+            if (banned.length() > 0)
+                sendEmbedMessage("Banned:" + banned.toString(), event.getTextChannel(), false);
+        } else {
+            throw new InvalidCommandArgumentException("Usage: `.Ban <@User (As many as you want)> <Reason>*`");
+        }
     }
-
 }
