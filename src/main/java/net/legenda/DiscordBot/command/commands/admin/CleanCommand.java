@@ -50,7 +50,7 @@ public class CleanCommand extends Command {
         } else if (args[0].startsWith("<@")) {
             toDelete = history.limit(amount).collect(Collectors.toList());
         } else {
-            throw new InvalidCommandArgumentException("Usage: .Clean <all/commands/@User/\"message\">* <Amount(default 100)>*");
+            throw new InvalidCommandArgumentException("Usage: .Clean <all/commands/\"message\">* <Amount(default 100)>* <@User>*");
         }
 
         try {
@@ -75,7 +75,7 @@ public class CleanCommand extends Command {
         for (String arg : args)
             if (!arg.matches("[<@].*[>]"))
                 strippedArgs.append(arg).append(" ");
-        return strippedArgs.toString().substring(0, strippedArgs.length() - 1).split(" ");
+        return strippedArgs.toString().substring(0, strippedArgs.length() > 0 ? strippedArgs.length() -1 : 0).split(" ");
     }
 
 }
