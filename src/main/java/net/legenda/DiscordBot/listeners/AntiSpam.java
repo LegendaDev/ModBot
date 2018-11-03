@@ -22,7 +22,7 @@ public class AntiSpam extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         List<Message> history = event.getTextChannel().getIterableHistory().complete().stream().limit(10).filter(msg -> !msg.equals(event.getMessage())).collect(Collectors.toList());
         int spam = history.stream().filter(message -> message.getAuthor().equals(event.getAuthor()) && !message.getAuthor().isBot()).filter(msg -> (event.getMessage().getCreationTime().toEpochSecond() - msg.getCreationTime().toEpochSecond()) < 6).collect(Collectors.toList()).size();
-        if (spam > 2) {
+        if (spam > 2 && !event.getGuild().getOwner().equals(event.getMember()) && !PermissionUtil.checkPermission(event.getMember(), Permission.ADMINISTRATOR)) {
             int timesWarned = 0;
             if (warned.containsKey(event.getAuthor()))
                 timesWarned = warned.get(event.getAuthor());
