@@ -14,28 +14,35 @@ public class SeekCommand extends Command {
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
-        if(args.length < 1)
-            throw new InvalidCommandArgumentException("Usage: `.Seek <time:stamp>`");
+        if (args.length < 1)
+            throw new InvalidCommandArgumentException("Usage: `.Seek <time:stamp> \n .Seek <(+/-) amount (s/m/h)>`");
         String arg = args[0];
-        String regex1 = "(?:\\d?\\d):(?:[012345]\\d)";
-        String regex2 = "(?:\\d?\\d):(?:[012345]\\d):(?:[012345]\\d)";
         long time;
-        Pattern pattern1 = Pattern.compile(regex1);
-        Pattern pattern2 = Pattern.compile(regex2);
-        Matcher match1 = pattern1.matcher(arg);
-        Matcher match2 = pattern2.matcher(arg);
-        if (match1.find()){
+        if (arg.matches("(?:\\d?\\d):(?:[012345]\\d)")) {
             String minutes = arg.split(":")[0];
             String seconds = arg.split(":")[1];
             time = Long.parseLong(minutes) * 60000 + Long.parseLong(seconds) * 1000;
-
-        } else if (match2.find()) {
+        } else if (arg.matches("(?:\\d?\\d):(?:[012345]\\d):(?:[012345]\\d)")) {
             String hours = arg.split(":")[0];
             String minutes = arg.split(":")[1];
             String seconds = arg.split(":")[2];
             time = Long.parseLong(hours) * 3600000 + Long.parseLong(minutes) * 60000 + Long.parseLong(seconds) * 1000;
-        }  else {
-            throw new InvalidCommandArgumentException("Must be a time stamp in format `minutes:seconds`");
+        } else if (arg.matches("[?:+|-]?\\d*([.]\\d*)?[smh]")) {
+            char format = arg.charAt(arg.length() - 1);
+            double amount = Double.parseDouble(arg.substring((arg.startsWith("-") || arg.startsWith("+")) ? 1 : 0, arg.length() - 1));
+            if (arg.matches("[-]\\d*[smh]"))
+                amount *= -1;
+            long position = Main.INSTANCE.musicUtils.getAudioPlayer(event.getGuild()).getPlayingTrack().getPosition();
+            if (format == 's')
+                time = position + (int) (amount * 1000);
+            else if (format == 'm')
+                time = position + (int) (amount * 60000);
+            else if (format == 'h')
+                time = position + (int) (amount * 3600000);
+            else
+                time = position;
+        } else {
+            throw new InvalidCommandArgumentException("Usage: `.Seek <time:stamp> \n .Seek <(+/-) amount (s/m/h)>`");
         }
         sendMessage(":mag: Seeked: `" + arg + "`", event.getTextChannel());
         Main.INSTANCE.musicUtils.seek(event.getGuild(), time);
