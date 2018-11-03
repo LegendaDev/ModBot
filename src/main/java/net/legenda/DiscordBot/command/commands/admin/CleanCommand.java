@@ -8,7 +8,6 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -51,7 +50,6 @@ public class CleanCommand extends Command {
         } else if (args[0].startsWith("<@")) {
             toDelete = history.limit(amount).collect(Collectors.toList());
         } else {
-            System.out.println(selected);
             throw new InvalidCommandArgumentException("Usage: .Clean <all/commands/@User/\"message\">* <Amount(default 100)>*");
         }
 
