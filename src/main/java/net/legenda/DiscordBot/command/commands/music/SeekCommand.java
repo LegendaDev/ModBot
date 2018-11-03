@@ -18,11 +18,11 @@ public class SeekCommand extends Command {
             throw new InvalidCommandArgumentException("Usage: `.Seek <time:stamp> \n .Seek <(+/-) amount (s/m/h)>`");
         String arg = args[0];
         long time;
-        if (arg.matches("(?:\\d?\\d):(?:[012345]\\d)")) {
+        if (arg.matches("(\\d?\\d)[:]([012345]?\\d)")) {
             String minutes = arg.split(":")[0];
             String seconds = arg.split(":")[1];
             time = Long.parseLong(minutes) * 60000 + Long.parseLong(seconds) * 1000;
-        } else if (arg.matches("(?:\\d?\\d):(?:[012345]\\d):(?:[012345]\\d)")) {
+        } else if (arg.matches("(\\d?\\d*)[:]([012345]?\\d)[:]([012345]?\\d)")) {
             String hours = arg.split(":")[0];
             String minutes = arg.split(":")[1];
             String seconds = arg.split(":")[2];
@@ -30,7 +30,7 @@ public class SeekCommand extends Command {
         } else if (arg.matches("[?:+|-]?\\d*([.]\\d*)?[smh]")) {
             char format = arg.charAt(arg.length() - 1);
             double amount = Double.parseDouble(arg.substring((arg.startsWith("-") || arg.startsWith("+")) ? 1 : 0, arg.length() - 1));
-            if (arg.matches("[-]\\d*[smh]"))
+            if (arg.startsWith("-"))
                 amount *= -1;
             long position = Main.INSTANCE.musicUtils.getAudioPlayer(event.getGuild()).getPlayingTrack().getPosition();
             if (format == 's')
