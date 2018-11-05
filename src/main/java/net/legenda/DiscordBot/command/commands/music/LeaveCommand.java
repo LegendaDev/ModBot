@@ -14,18 +14,12 @@ public class LeaveCommand extends Command {
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         AudioManager manager = event.getGuild().getAudioManager();
-        if (event.getGuild().getAudioManager().getConnectedChannel() == null && !event.getGuild().getAudioManager().isConnected()) {
+        if (event.getGuild().getAudioManager().getConnectedChannel() == null && !event.getGuild().getAudioManager().isConnected())
             throw new InvalidCommandStateException("Currently not connected to any voice channels");
-        } else {
-            TrackManager track = Main.INSTANCE.musicUtils.getTrackManager(event.getGuild());
-            MusicUtils.players.remove(event.getGuild());
-            manager.closeAudioConnection();
-            try {
-                track.clearQueue(true);
-            } catch (Exception e) {
-                e.getMessage();
-            }
-            sendMessage(":arrow_up: Left channel", event.getTextChannel());
-        }
+        TrackManager track = Main.INSTANCE.musicUtils.getTrackManager(event.getGuild());
+        Main.INSTANCE.musicUtils.players.remove(event.getGuild());
+        manager.closeAudioConnection();
+        track.clearQueue(true);
+        sendMessage(":arrow_up: Left channel", event.getTextChannel());
     }
 }

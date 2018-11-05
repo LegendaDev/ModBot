@@ -35,7 +35,7 @@ public class TrackManager extends AudioEventAdapter {
     public void queue(AudioTrack track, Member author, TextChannel channel, boolean top) {
         AudioTrackInfo info = new AudioTrackInfo(track, author, channel);
         Set<AudioTrackInfo> currentQueue = new LinkedHashSet<>();
-        if(top){
+        if (top) {
             currentQueue = getQueue().stream().skip(1).collect(Collectors.toSet());
             clearQueue(false);
         }
@@ -60,11 +60,11 @@ public class TrackManager extends AudioEventAdapter {
             queue.add(oldQueue.get(0));
     }
 
-    public String removeItem(int number){
-        if(number > queue.size())
+    public String removeItem(int number) {
+        if (number > queue.size())
             throw new InvalidCommandStateException("Could not find track");
         AudioTrackInfo toRemove = getQueue().stream().skip(number - 1).findFirst().orElse(null);
-        if(toRemove == null)
+        if (toRemove == null)
             throw new InvalidCommandStateException("Could not find track");
         queue.remove(toRemove);
         return "Removed: " + number + ". `" + toRemove.getTrack().getInfo().title + "`";
@@ -99,11 +99,10 @@ public class TrackManager extends AudioEventAdapter {
         VoiceChannel channel = info.getAuthor().getVoiceState().getChannel();
         VoiceChannel connected = info.getAuthor().getGuild().getAudioManager().getConnectedChannel();
         Guild guild = info.getAuthor().getGuild();
-        if (connected != null) {
+        if (connected != null)
             channel = connected;
-        } else if (channel == null) {
+        else if (channel == null)
             throw new InvalidCommandStateException("You must be in a VoiceChannel to summon the bot");
-        }
         sendNextTrackMessage(info, guild, track);
         guild.getAudioManager().openAudioConnection(channel);
     }

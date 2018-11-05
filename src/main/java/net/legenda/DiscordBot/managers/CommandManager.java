@@ -29,7 +29,7 @@ public class CommandManager {
         User user = event.getAuthor();
         TextChannel channel = event.getTextChannel();
         if (msg.getContentDisplay().startsWith(Main.INSTANCE.cmdPrefix)) {
-            String message = msg.getContentRaw().substring(1);
+            String message = msg.getContentRaw().substring(Main.INSTANCE.cmdPrefix.length());
             String[] args = message.split(" ");
             if (!message.isEmpty()) {
                 for (Command cmd : commands.values()) {
@@ -103,7 +103,7 @@ public class CommandManager {
     }
 
     private static boolean hasRole(Command cmd, Guild guild, User user) {
-        List<Role> roles = Main.INSTANCE.configManager.roles.values().stream().filter(role -> role.getGuild().equals(guild)).collect(Collectors.toList());
+        List<Role> roles = guild.getRoles();
         int hierarchyofperm = 10000;
         for (int i = 0; i < roles.size(); i++) {
             if (roles.get(i).getName().equalsIgnoreCase(cmd.getRole()))

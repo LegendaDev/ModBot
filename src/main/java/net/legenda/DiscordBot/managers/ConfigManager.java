@@ -1,7 +1,6 @@
 package net.legenda.DiscordBot.managers;
 
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Role;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.config.Preset;
 import net.legenda.DiscordBot.utils.FileUtils;
@@ -16,11 +15,9 @@ import java.util.*;
 
 public class ConfigManager {
 
-    public HashMap<Guild, Role> roles = new LinkedHashMap<>();
     public HashMap<Guild, ArrayList<Preset>> presets = new LinkedHashMap<>();
 
     public void readData() {
-        getRoles();
         try {
             FileReader reader = new FileReader(FileUtils.configFile());
             JSONTokener tokener = new JSONTokener(reader);
@@ -28,18 +25,11 @@ public class ConfigManager {
             for (Map.Entry<String, Object> guild : json.toMap().entrySet()) {
                 JSONArray array = json.getJSONArray(guild.getKey());
                 for (Object object : array.toList()) {
-                    String[] split = object.toString().replaceAll("[{}]", "").split("=");
-                    if (split.length > 1) {
-                        String key = split[0];
-                        String value = split[1];
-                        try {
-                            Guild g = Main.INSTANCE.jdaBot.getGuildById(guild.getKey());
-                            if (g != null)
-                                appendPreset(g, new Preset(key, value));
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    Map.Entry<String, String> entry = FileUtils.getJsonEntry(object.toString());
+                    if (entry != null) {
+                        Guild g = Main.INSTANCE.jdaBot.getGuildById(guild.getKey());
+                        if (g != null)
+                            appendPreset(g, new Preset(entry.getKey(), entry.getValue()));
                     }
                 }
             }
@@ -64,11 +54,11 @@ public class ConfigManager {
         FileUtils.writeLines(FileUtils.configFile(), data);
     }
 
-    public String getToken() {
+    public String getToken(String path) {
         FileReader fileReader;
         BufferedReader bufferedReader;
         try {
-            fileReader = new FileReader("D:/Documents/Coding/IdeaProjects/Discord/token.txt");
+            fileReader = new FileReader(path);
             bufferedReader = new BufferedReader(fileReader);
             return bufferedReader.readLine();
         } catch (java.io.IOException e) {
@@ -89,9 +79,5 @@ public class ConfigManager {
             data.add(preset);
         presets.put(guild, data);
         saveData();
-    }
-
-    private void getRoles() {
-        Main.INSTANCE.jdaBot.getGuilds().forEach(guild -> guild.getRoles().forEach(role -> roles.put(role.getGuild(), role)));
     }
 }

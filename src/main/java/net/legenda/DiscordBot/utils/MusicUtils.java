@@ -25,23 +25,23 @@ import java.util.stream.Collectors;
 public class MusicUtils {
 
     private static final AudioPlayerManager manager = new DefaultAudioPlayerManager();
-    public static final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> players = new HashMap<>();
+    public final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> players = new HashMap<>();
 
     public MusicUtils() {
         AudioSourceManagers.registerRemoteSources(manager);
     }
 
     public AudioPlayer getAudioPlayer(Guild guild) {
-        if (players.containsKey(guild)) {
+        if (players.containsKey(guild))
             return players.get(guild).getKey();
-        }
+
         return newPlayer(guild);
     }
 
     public TrackManager getTrackManager(Guild guild) {
-        if (!players.containsKey(guild)) {
+        if (!players.containsKey(guild))
             newPlayer(guild);
-        }
+
         return players.get(guild).getValue();
     }
 
@@ -49,9 +49,7 @@ public class MusicUtils {
         AudioPlayer player = manager.createPlayer();
         TrackManager trackManager = new TrackManager(player);
         player.addListener(trackManager);
-
         guild.getAudioManager().setSendingHandler(new PlayerSendHandler(player));
-
         players.put(guild, new AbstractMap.SimpleEntry<>(player, trackManager));
 
         return player;
@@ -127,7 +125,7 @@ public class MusicUtils {
 
     public void seek(Guild guild, Long pos) {
         AudioTrack track = getAudioPlayer(guild).getPlayingTrack();
-        if(track == null)
+        if (track == null)
             throw new InvalidCommandStateException("No song is playing");
         if (pos > track.getInfo().length)
             throw new InvalidCommandStateException("Cannot seek longer than the current song!");
@@ -192,14 +190,14 @@ public class MusicUtils {
         if (secondStr.toCharArray().length < 2) {
             secondStr = "0" + secondStr;
         }
-        if(hours > 1){
+        if (hours > 1) {
             String minutesStr = (int) minutes + "";
-            if(minutesStr.toCharArray().length < 2){
+            if (minutesStr.toCharArray().length < 2) {
                 minutesStr = "0" + minutesStr;
             }
             return (int) hours + ":" + minutesStr + ":" + secondStr;
         } else {
-            return (int) minutes + ":"+ secondStr;
+            return (int) minutes + ":" + secondStr;
         }
 
     }
