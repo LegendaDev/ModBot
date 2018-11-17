@@ -95,7 +95,7 @@ public class CommandManager {
         String message = msg.getContentDisplay().substring(1);
         String[] args = message.split(" ");
         for (Command cmd : commands.values()) {
-            if (cmd.getName().equalsIgnoreCase(args[0])) {
+            if (cmd.getName().equalsIgnoreCase(args[0]) || Arrays.stream(cmd.getAlias()).anyMatch(alias -> alias.equalsIgnoreCase(args[0]))) {
                 return true;
             }
         }
