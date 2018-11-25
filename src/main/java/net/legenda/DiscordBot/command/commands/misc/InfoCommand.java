@@ -43,7 +43,7 @@ public class InfoCommand extends Command {
                         + "`\n Status: `" + member.getOnlineStatus()
                         + "`\n Game: `" + (member.getGame() != null ? member.getGame().getName() : "NONE") + "`", false);
         builder.addField("Member Info",
-                "Nickname: `" + member.getNickname()
+                "Nickname: `" + (member.getNickname() != null ? member.getNickname() : "NONE")
                         + "`\n Joined: `" + member.getJoinDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss"))
                         + "`\n Roles: `" + String.join(", ", member.getRoles().stream().map(Role::getName).collect(Collectors.toList())) + "`", false);
         event.getTextChannel().sendMessage(builder.build()).queue();
