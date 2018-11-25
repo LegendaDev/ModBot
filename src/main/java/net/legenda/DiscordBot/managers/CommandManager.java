@@ -12,6 +12,7 @@ import net.legenda.DiscordBot.command.commands.fun.RandomCommand;
 import net.legenda.DiscordBot.command.commands.fun.RollCommand;
 import net.legenda.DiscordBot.command.commands.misc.DevelopersCommand;
 import net.legenda.DiscordBot.command.commands.misc.HelpCommand;
+import net.legenda.DiscordBot.command.commands.misc.InfoCommand;
 import net.legenda.DiscordBot.command.commands.music.*;
 import net.legenda.DiscordBot.exceptions.IllegalCommandAccessException;
 import net.legenda.DiscordBot.exceptions.InvalidCommandException;
@@ -67,8 +68,9 @@ public class CommandManager {
         commands.put("RollCommand", new RollCommand());
 
         //Misc
-        commands.put("HelpCommand", new HelpCommand());
         commands.put("DeveloperCommand", new DevelopersCommand());
+        commands.put("HelpCommand", new HelpCommand());
+        commands.put("InfoCommand", new InfoCommand());
 
         //Music
         commands.put("ClearCommand", new ClearCommand());

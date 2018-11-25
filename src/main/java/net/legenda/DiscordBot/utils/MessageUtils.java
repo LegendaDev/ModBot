@@ -32,4 +32,14 @@ public class MessageUtils {
         return eb.build();
     }
 
+    public EmbedBuilder getDefaultBuilder() {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Color.getHSBColor(hue, 1f, 1f));
+        hue += 0.12;
+        if (hue > 1)
+            hue = 0;
+        eb.setFooter("Created by " + Author, Author_Image);
+        return eb;
+    }
+
 }
