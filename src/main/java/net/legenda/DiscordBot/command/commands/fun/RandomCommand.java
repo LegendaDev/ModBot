@@ -16,19 +16,20 @@ import java.util.stream.Collectors;
 @Command.cmdInfo(name = "Random", description = "Tags a random member with your message", type = Command.Type.Fun)
 public class RandomCommand extends Command {
 
+    private Random random = new Random();
+
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
-        if (args.length == 0) {
+        if (args.length == 0)
             throw new InvalidCommandArgumentException("Usage: `.Random <Message>*`");
-        }
         String message = String.join(" ", args);
         Guild guild = event.getGuild();
         List<Member> members = guild.getMembers().stream().filter(member -> !member.getOnlineStatus().equals(OnlineStatus.OFFLINE)).filter(member -> !member.equals(event.getMember())).filter(member -> !member.getUser().isBot()).collect(Collectors.toList());
         if (members.isEmpty())
             throw new InvalidCommandStateException("Search yielded no results");
-        Member random = members.get(new Random().nextInt(members.size()));
+        Member randomMember = members.get(random.nextInt(members.size()));
         if (random == null)
             throw new InvalidCommandStateException("Search yielded no results");
-        sendEmbedMessage(random.getAsMention() + " " + message, event.getTextChannel(), false);
+        sendEmbedMessage(randomMember.getAsMention() + " " + message, event.getTextChannel(), false);
     }
 }
