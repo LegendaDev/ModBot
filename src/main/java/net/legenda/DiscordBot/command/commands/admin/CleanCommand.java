@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -28,11 +29,13 @@ public class CleanCommand extends Command {
             if (strippedArgs.length == 1)
                 amount = Integer.parseInt(strippedArgs[0]);
             else {
-                selected = strippedArgs[0];
-                amount = Integer.parseInt(strippedArgs[1]);
+                amount = Integer.parseInt(strippedArgs[0]);
+                selected = strippedArgs[1];
             }
         } catch (Exception e) {
             selected = strippedArgs[0];
+            if (strippedArgs.length > 1)
+                amount = Integer.parseInt(strippedArgs[1]);
         }
 
         if (amount > 100 || amount < 1)
@@ -56,7 +59,7 @@ public class CleanCommand extends Command {
         try {
             if (toDelete.isEmpty())
                 throw new InvalidCommandStateException("The message query returned no messages to delete");
-            else if (toDelete.size() <= 1)
+            else if (toDelete.size() == 1)
                 event.getChannel().deleteMessageById(toDelete.get(0).getId()).queue();
             else
                 event.getTextChannel().deleteMessages(toDelete).queue();
