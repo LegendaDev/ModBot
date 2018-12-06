@@ -8,8 +8,6 @@ public class PingCommand extends Command{
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
-        long ping = event.getAuthor().getJDA().getPing();
-        sendEmbedMessage("Pong: `" + ping + "ms`", event.getTextChannel(), false);
-
+        sendEmbedMessage("Pong: `" + event.getJDA().getPing() + "ms`", event.getTextChannel(), false);
     }
 }
