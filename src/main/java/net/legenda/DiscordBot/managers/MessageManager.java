@@ -18,7 +18,7 @@ public class MessageManager extends ListenerAdapter {
         } catch (IllegalCommandAccessException | InvalidCommandArgumentException | InvalidCommandException | InvalidCommandStateException e) {
             Command.sendErrorMessage(e.getLocalizedMessage(), event.getTextChannel(), false);
         } catch (Exception e) {
-            new Thread(() -> Main.INSTANCE.LOGGER.warn("UNHANDLED EXCEPTION :" + e.getMessage())).start();
+            Main.INSTANCE.LOGGER.warn("UNHANDLED EXCEPTION :" + e.getMessage());
             System.out.print("-----------------------------------------------------\n");
             e.printStackTrace();
         }
