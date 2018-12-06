@@ -33,16 +33,6 @@ public class AntiSpam extends ListenerAdapter {
             else
                 Command.sendErrorMessage("Please leave 2 seconds between messages, " + event.getAuthor().getAsMention(), event.getTextChannel(), true);
             event.getMessage().delete().queue();
-
-            if (timesWarned >= 5)
-                new Thread(() -> {
-                    try {
-                        Thread.sleep(10000L);
-                        warned.put(event.getAuthor(), 0);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }).run();
         }
     }
 
@@ -52,7 +42,7 @@ public class AntiSpam extends ListenerAdapter {
         if (muteRole != null && !PermissionUtil.checkPermission(channel, guild.getMember(user), Permission.ADMINISTRATOR) && guild.getMember(user).getRoles().stream().noneMatch(role -> role.getName().equalsIgnoreCase("Cooldown"))) {
             GuildController guildController = guild.getController();
             guildController.removeRolesFromMember(guild.getMember(user), guild.getMember(user).getRoles()).queue();
-            guildController.addSingleRoleToMember(guild.getMember(user), muteRole).queue(success -> channel.sendMessage(Main.INSTANCE.msgUtil.wrapMessage("Added " + user.getAsMention() + " To Cooldown")).queue());
+            guildController.addSingleRoleToMember(guild.getMember(user), muteRole).queue(success -> channel.sendMessage(Main.INSTANCE.msgUtil.wrapMessage("Added " + user.getAsMention() + " To Cooldown")).queue(callback -> warned.put(user, 0)));
         }
     }
 
