@@ -20,11 +20,17 @@ import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class MusicUtils {
 
     private static final AudioPlayerManager manager = new DefaultAudioPlayerManager();
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private final Map<Guild, ScheduledFuture> connectionScheduler = new HashMap<>();
     public final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> players = new HashMap<>();
 
     public MusicUtils() {
@@ -199,7 +205,20 @@ public class MusicUtils {
         } else {
             return (int) minutes + ":" + secondStr;
         }
+    }
 
+    public void addSchedule(Guild guild, Runnable runnable, long delay, TimeUnit unit) {
+        removeSchedule(guild);
+        connectionScheduler.put(guild, scheduler.schedule(runnable, delay, unit));
+    }
+
+    public void removeSchedule(Guild guild) {
+        ScheduledFuture currentSchedule = connectionScheduler.get(guild);
+        if (currentSchedule != null) {
+            if (!currentSchedule.isCancelled())
+                currentSchedule.cancel(true);
+            connectionScheduler.remove(guild);
+        }
     }
 
     private String getPositionInQueue(AudioTrack audioTrack, Guild guild) {

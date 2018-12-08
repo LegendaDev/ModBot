@@ -19,7 +19,7 @@ import net.legenda.DiscordBot.utils.MessageUtils;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 public class TrackManager extends AudioEventAdapter {
@@ -103,6 +103,7 @@ public class TrackManager extends AudioEventAdapter {
             throw new InvalidCommandStateException("You must be in a VoiceChannel to summon the bot");
         sendNextTrackMessage(info, guild, track);
         guild.getAudioManager().openAudioConnection(channel);
+        Main.INSTANCE.musicUtils.removeSchedule(guild);
     }
 
     @Override
@@ -115,6 +116,11 @@ public class TrackManager extends AudioEventAdapter {
             queue.poll();
             if (!queue.isEmpty()) {
                 player.playTrack(queue.element().getTrack());
+            } else {
+                Main.INSTANCE.musicUtils.addSchedule(guild, () -> {
+                    guild.getAudioManager().closeAudioConnection();
+                    Main.INSTANCE.musicUtils.removeSchedule(guild);
+                }, 20, TimeUnit.SECONDS);
             }
         } else {
             addTop(queue.element());
@@ -144,5 +150,4 @@ public class TrackManager extends AudioEventAdapter {
     public void onTrackStuck(AudioPlayer player, AudioTrack track, long thresholdMs) {
         player.playTrack(track);
     }
-
 }
