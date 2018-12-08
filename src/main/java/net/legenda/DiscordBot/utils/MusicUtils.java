@@ -29,8 +29,6 @@ import java.util.stream.Collectors;
 public class MusicUtils {
 
     private static final AudioPlayerManager manager = new DefaultAudioPlayerManager();
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private final Map<Guild, ScheduledFuture> connectionScheduler = new HashMap<>();
     public final Map<Guild, Map.Entry<AudioPlayer, TrackManager>> players = new HashMap<>();
 
     public MusicUtils() {
@@ -159,6 +157,13 @@ public class MusicUtils {
         getTrackManager(guild).shuffleQueue();
     }
 
+    public void closeAudio(Guild guild) {
+        players.remove(guild);
+        getTrackManager(guild).clearQueue(true);
+        guild.getAudioManager().closeAudioConnection();
+
+    }
+
     private void sendMessage(AudioTrack audioTrack, Message msg, TextChannel channel) {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setAuthor("Added:", audioTrack.getInfo().uri, msg.getAuthor().getAvatarUrl());
@@ -204,20 +209,6 @@ public class MusicUtils {
             return (int) hours + ":" + minutesStr + ":" + secondStr;
         } else {
             return (int) minutes + ":" + secondStr;
-        }
-    }
-
-    public void addSchedule(Guild guild, Runnable runnable, long delay, TimeUnit unit) {
-        removeSchedule(guild);
-        connectionScheduler.put(guild, scheduler.schedule(runnable, delay, unit));
-    }
-
-    public void removeSchedule(Guild guild) {
-        ScheduledFuture currentSchedule = connectionScheduler.get(guild);
-        if (currentSchedule != null) {
-            if (!currentSchedule.isCancelled())
-                currentSchedule.cancel(true);
-            connectionScheduler.remove(guild);
         }
     }
 

@@ -103,7 +103,7 @@ public class TrackManager extends AudioEventAdapter {
             throw new InvalidCommandStateException("You must be in a VoiceChannel to summon the bot");
         sendNextTrackMessage(info, guild, track);
         guild.getAudioManager().openAudioConnection(channel);
-        Main.INSTANCE.musicUtils.removeSchedule(guild);
+        Main.INSTANCE.scheduleManager.remove(guild);
     }
 
     @Override
@@ -117,10 +117,10 @@ public class TrackManager extends AudioEventAdapter {
             if (!queue.isEmpty()) {
                 player.playTrack(queue.element().getTrack());
             } else {
-                Main.INSTANCE.musicUtils.addSchedule(guild, () -> {
-                    guild.getAudioManager().closeAudioConnection();
-                    Main.INSTANCE.musicUtils.removeSchedule(guild);
-                }, 20, TimeUnit.SECONDS);
+                Main.INSTANCE.scheduleManager.schedule(guild, () -> {
+                    Main.INSTANCE.musicUtils.closeAudio(guild);
+                    Main.INSTANCE.scheduleManager.remove(guild);
+                }, 1, TimeUnit.MINUTES);
             }
         } else {
             addTop(queue.element());
