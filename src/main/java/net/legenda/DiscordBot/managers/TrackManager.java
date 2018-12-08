@@ -53,8 +53,6 @@ public class TrackManager extends AudioEventAdapter {
 
     public void clearQueue(boolean current) {
         List<AudioTrackInfo> oldQueue = new ArrayList<>(getQueue());
-        if (oldQueue.isEmpty())
-            throw new InvalidCommandStateException("The Queue is already empty");
         queue.clear();
         if (!current)
             queue.add(oldQueue.get(0));
