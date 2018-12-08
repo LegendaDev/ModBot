@@ -3,13 +3,12 @@ package net.legenda.DiscordBot.command.commands.music;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.command.CommandInfo;
+import net.legenda.DiscordBot.command.CommandType;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-
-@Command.cmdInfo(name = "Seek", description = "Sets position of the current track", type = Command.Type.Music, role = "DJ")
+@CommandInfo(name = "Seek", description = "Sets position of the current track", type = CommandType.Music, role = "DJ")
 public class SeekCommand extends Command {
 
     @Override

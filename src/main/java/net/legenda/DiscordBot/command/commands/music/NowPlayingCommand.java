@@ -6,6 +6,8 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.audio.AudioTrackInfo;
+import net.legenda.DiscordBot.command.CommandInfo;
+import net.legenda.DiscordBot.command.CommandType;
 import net.legenda.DiscordBot.managers.TrackManager;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
@@ -14,7 +16,7 @@ import net.legenda.DiscordBot.utils.MessageUtils;
 import java.awt.*;
 import java.util.Objects;
 
-@Command.cmdInfo(name = "NowPlaying", description = "Sends Info About the Current Track", type = Command.Type.Music, alias = {"np"})
+@CommandInfo(name = "NowPlaying", description = "Sends Info About the Current Track", type = CommandType.Music, alias = {"np"})
 public class NowPlayingCommand extends Command {
 
     @Override

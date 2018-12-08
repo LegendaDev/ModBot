@@ -5,12 +5,14 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.managers.GuildController;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.command.CommandInfo;
+import net.legenda.DiscordBot.command.CommandType;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 
 import java.util.Arrays;
 import java.util.List;
 
-@Command.cmdInfo(name = "Kick", description = "Kicks a user from the server", type = Command.Type.Admin, permission = Permission.KICK_MEMBERS)
+@CommandInfo(name = "Kick", description = "Kicks a user from the server", type = CommandType.Admin, permission = Permission.KICK_MEMBERS)
 public class KickCommand extends Command {
 
     @Override

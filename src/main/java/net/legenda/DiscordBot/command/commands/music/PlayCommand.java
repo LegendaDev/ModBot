@@ -3,13 +3,15 @@ package net.legenda.DiscordBot.command.commands.music;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.command.CommandInfo;
+import net.legenda.DiscordBot.command.CommandType;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
 import java.util.Arrays;
 
 
-@Command.cmdInfo(name = "Play", description = "Adds a song to the queue", type = Command.Type.Music)
+@CommandInfo(name = "Play", description = "Adds a song to the queue", type = CommandType.Music)
 public class PlayCommand extends Command {
 
     @Override

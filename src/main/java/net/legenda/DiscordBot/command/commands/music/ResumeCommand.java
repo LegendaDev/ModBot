@@ -3,8 +3,10 @@ package net.legenda.DiscordBot.command.commands.music;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.command.CommandInfo;
+import net.legenda.DiscordBot.command.CommandType;
 
-@Command.cmdInfo(name = "Resume", description = "Unpauses current song", type = Command.Type.Music, alias = {"unpause"})
+@CommandInfo(name = "Resume", description = "Unpauses current song", type = CommandType.Music, alias = {"unpause"})
 public class ResumeCommand extends Command {
 
     @Override

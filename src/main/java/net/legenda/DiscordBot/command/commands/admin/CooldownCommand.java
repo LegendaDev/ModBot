@@ -7,10 +7,12 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.managers.GuildController;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.command.CommandInfo;
+import net.legenda.DiscordBot.command.CommandType;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
-@Command.cmdInfo(name = "Cooldown", description = "Adds user to cooldown role", type = Command.Type.Admin, permission = Permission.MESSAGE_MANAGE, alias = {"mute"})
+@CommandInfo(name = "Cooldown", description = "Adds user to cooldown role", type = CommandType.Admin, permission = Permission.MESSAGE_MANAGE, alias = {"mute"})
 public class CooldownCommand extends Command {
 
     @Override

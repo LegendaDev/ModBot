@@ -5,47 +5,22 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.legenda.DiscordBot.Main;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Command {
 
-    private final String name = getClass().getAnnotation(cmdInfo.class).name();
-    private final String description = getClass().getAnnotation(cmdInfo.class).description();
-    private final Type type = getClass().getAnnotation(cmdInfo.class).type();
-    private final String role = getClass().getAnnotation(cmdInfo.class).role();
-    private final Permission perm = getClass().getAnnotation(cmdInfo.class).permission();
-    private final String[] alias = getClass().getAnnotation(cmdInfo.class).alias();
+    private final String name = getClass().getAnnotation(CommandInfo.class).name();
+    private final String description = getClass().getAnnotation(CommandInfo.class).description();
+    private final CommandType type = getClass().getAnnotation(CommandInfo.class).type();
+    private final String role = getClass().getAnnotation(CommandInfo.class).role();
+    private final Permission perm = getClass().getAnnotation(CommandInfo.class).permission();
+    private final String[] alias = getClass().getAnnotation(CommandInfo.class).alias();
 
     /**
      * @param args  = The given arguments of the command
      * @param event = The MessageEvent
      */
     public abstract void execute(String[] args, MessageReceivedEvent event);
-
-    public enum Type {
-        Admin, Music, Fun, Misc
-    }
-
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface cmdInfo {
-        String name();
-
-        String description();
-
-        Type type() default Type.Misc;
-
-        String role() default "@everyone";
-
-        Permission permission() default Permission.UNKNOWN;
-
-        String[] alias() default "";
-
-    }
 
     public String getName() {
         return name;
@@ -63,7 +38,7 @@ public abstract class Command {
         return this.perm;
     }
 
-    public Type getType() {
+    public CommandType getType() {
         return this.type;
     }
 

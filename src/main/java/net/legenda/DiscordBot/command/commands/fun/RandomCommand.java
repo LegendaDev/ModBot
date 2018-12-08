@@ -5,15 +5,16 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.command.CommandInfo;
+import net.legenda.DiscordBot.command.CommandType;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-@Command.cmdInfo(name = "Random", description = "Tags a random member with your message", type = Command.Type.Fun)
+@CommandInfo(name = "Random", description = "Tags a random member with your message", type = CommandType.Fun)
 public class RandomCommand extends Command {
 
     private Random random = new Random();

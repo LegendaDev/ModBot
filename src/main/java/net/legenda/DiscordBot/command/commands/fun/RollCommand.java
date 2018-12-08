@@ -2,9 +2,11 @@ package net.legenda.DiscordBot.command.commands.fun;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.command.CommandInfo;
+import net.legenda.DiscordBot.command.CommandType;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
-@Command.cmdInfo(name = "Roll", description = "Rolls a dice", type = Command.Type.Fun)
+@CommandInfo(name = "Roll", description = "Rolls a dice", type = CommandType.Fun)
 public class RollCommand extends Command {
 
     @Override

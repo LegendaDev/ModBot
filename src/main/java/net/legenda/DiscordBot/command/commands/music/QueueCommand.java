@@ -6,17 +6,17 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.audio.AudioTrackInfo;
+import net.legenda.DiscordBot.command.CommandInfo;
+import net.legenda.DiscordBot.command.CommandType;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 import net.legenda.DiscordBot.managers.TrackManager;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
-import net.legenda.DiscordBot.utils.MusicUtils;
-
 import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Command.cmdInfo(name = "Queue", description = "Lists the current queue", type = Command.Type.Music)
+@CommandInfo(name = "Queue", description = "Lists the current queue", type = CommandType.Music)
 public class QueueCommand extends Command {
 
     @Override
@@ -36,7 +36,7 @@ public class QueueCommand extends Command {
         String author_Image = "https://cdn.discordapp.com/avatars/348464305164910605/11ec4dd6feaea03dc613a47efb1f6b27.jpg";
         builder.setFooter("Created By " + author, author_Image);
         AudioPlayer player = Main.INSTANCE.musicUtils.getAudioPlayer(event.getGuild());
-        TrackManager manager = MusicUtils.players.get(event.getGuild()).getValue();
+        TrackManager manager = Main.INSTANCE.musicUtils.players.get(event.getGuild()).getValue();
         AudioTrackInfo info = manager.getQueue().stream().findFirst().orElse(null);
         Member user = info == null ? null : info.getAuthor();
         StringBuilder queue = new StringBuilder();

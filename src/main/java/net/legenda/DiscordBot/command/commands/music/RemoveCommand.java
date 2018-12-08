@@ -3,10 +3,12 @@ package net.legenda.DiscordBot.command.commands.music;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.command.CommandInfo;
+import net.legenda.DiscordBot.command.CommandType;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
-@Command.cmdInfo(name = "Remove", description = "Removes track from queue", type = Command.Type.Music, role = "DJ")
+@CommandInfo(name = "Remove", description = "Removes track from queue", type = CommandType.Music, role = "DJ")
 public class RemoveCommand extends Command {
 
     @Override

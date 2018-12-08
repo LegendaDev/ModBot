@@ -5,10 +5,11 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.command.CommandInfo;
 
 import java.util.List;
 
-@Command.cmdInfo(name = "Developers", description = "Defines the developer role")
+@CommandInfo(name = "Developers", description = "Defines the developer role")
 public class DevelopersCommand extends Command {
 
     @Override

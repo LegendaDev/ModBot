@@ -7,19 +7,20 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.command.CommandInfo;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
-@Command.cmdInfo(name = "UserInfo", description = "Lists out a user's information")
+@CommandInfo(name = "UserInfo", description = "Lists out a user's information")
 public class InfoCommand extends Command {
 
     @Override
     public void execute(String[] args, MessageReceivedEvent event) {
         User user;
         if (args.length > 0)
-            if (event.getMessage().getMentionedUsers().size() > 0 && args[0].matches("<@[0-9]+>"))
+            if (event.getMessage().getMentionedUsers().size() > 0 && args[0].matches("<@[!]?[0-9]+>"))
                 user = event.getMessage().getMentionedUsers().get(0);
             else if (args[0].matches("[0-9]+"))
                 try {

@@ -4,12 +4,14 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.legenda.DiscordBot.command.Command;
+import net.legenda.DiscordBot.command.CommandInfo;
+import net.legenda.DiscordBot.command.CommandType;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Command.cmdInfo(name = "Loop", description = "Loops current track", type = Command.Type.Music, role = "DJ", alias = {"Repeat"})
+@CommandInfo(name = "Loop", description = "Loops current track", type = CommandType.Music, role = "DJ", alias = {"Repeat"})
 public class LoopCommand extends Command {
 
     private final static HashMap<Guild, Integer> times = new HashMap<>();

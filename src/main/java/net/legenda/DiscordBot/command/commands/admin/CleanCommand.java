@@ -5,16 +5,17 @@ import net.legenda.DiscordBot.Main;
 import net.legenda.DiscordBot.command.Command;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.legenda.DiscordBot.command.CommandInfo;
+import net.legenda.DiscordBot.command.CommandType;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Command.cmdInfo(name = "Clean", description = "Removes messages from textChannel", type = Command.Type.Admin, permission = Permission.MESSAGE_MANAGE)
+@CommandInfo(name = "Clean", description = "Removes messages from textChannel", type = CommandType.Admin, permission = Permission.MESSAGE_MANAGE)
 public class CleanCommand extends Command {
 
     @Override
