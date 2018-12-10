@@ -14,7 +14,8 @@ public abstract class Command {
     private final CommandType type = getClass().getAnnotation(CommandInfo.class).type();
     private final String role = getClass().getAnnotation(CommandInfo.class).role();
     private final Permission perm = getClass().getAnnotation(CommandInfo.class).permission();
-    private final String[] alias = getClass().getAnnotation(CommandInfo.class).alias();
+    private final String[] aliases = getClass().getAnnotation(CommandInfo.class).aliases();
+    private final String[] args = getClass().getAnnotation(CommandInfo.class).args();
 
     /**
      * @param args  = The given arguments of the command
@@ -43,7 +44,11 @@ public abstract class Command {
     }
 
     public String[] getAlias() {
-        return this.alias;
+        return this.aliases;
+    }
+
+    public String[] getArgs() {
+        return this.args;
     }
 
     protected static void sendMessage(String msg, TextChannel channel) {

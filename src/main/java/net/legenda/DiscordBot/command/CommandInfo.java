@@ -20,6 +20,8 @@ public @interface CommandInfo {
 
     Permission permission() default Permission.UNKNOWN;
 
-    String[] alias() default "";
+    String[] aliases() default "";
+
+    String[] args() default "";
 
 }

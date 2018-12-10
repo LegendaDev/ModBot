@@ -11,7 +11,7 @@ import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 import java.util.HashMap;
 import java.util.Map;
 
-@CommandInfo(name = "Loop", description = "Loops current track", type = CommandType.Music, role = "DJ", alias = {"Repeat"})
+@CommandInfo(name = "Loop", description = "Loops current track", type = CommandType.Music, role = "DJ", aliases = {"Repeat"})
 public class LoopCommand extends Command {
 
     private final static HashMap<Guild, Integer> times = new HashMap<>();

@@ -10,7 +10,7 @@ import net.legenda.DiscordBot.managers.TrackManager;
 import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
-@CommandInfo(name = "Leave", description = "Leaves current channel", type = CommandType.Music, alias = {"disconnect"})
+@CommandInfo(name = "Leave", description = "Leaves current channel", type = CommandType.Music, aliases = {"disconnect"})
 public class LeaveCommand extends Command {
 
     @Override

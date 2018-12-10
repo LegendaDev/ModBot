@@ -12,7 +12,7 @@ import net.legenda.DiscordBot.command.CommandType;
 import net.legenda.DiscordBot.exceptions.InvalidCommandArgumentException;
 import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
-@CommandInfo(name = "Cooldown", description = "Adds user to cooldown role", type = CommandType.Admin, permission = Permission.MESSAGE_MANAGE, alias = {"mute"})
+@CommandInfo(name = "Cooldown", description = "Adds user to cooldown role", type = CommandType.Admin, permission = Permission.MESSAGE_MANAGE, aliases = {"mute"})
 public class CooldownCommand extends Command {
 
     @Override

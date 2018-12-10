@@ -16,7 +16,7 @@ import net.legenda.DiscordBot.utils.MessageUtils;
 import java.awt.*;
 import java.util.Objects;
 
-@CommandInfo(name = "NowPlaying", description = "Sends Info About the Current Track", type = CommandType.Music, alias = {"np"})
+@CommandInfo(name = "NowPlaying", description = "Sends Info About the Current Track", type = CommandType.Music, aliases = {"np"})
 public class NowPlayingCommand extends Command {
 
     @Override

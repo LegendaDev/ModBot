@@ -6,7 +6,7 @@ import net.legenda.DiscordBot.command.Command;
 import net.legenda.DiscordBot.command.CommandInfo;
 import net.legenda.DiscordBot.command.CommandType;
 
-@CommandInfo(name = "Resume", description = "Unpauses current song", type = CommandType.Music, alias = {"unpause"})
+@CommandInfo(name = "Resume", description = "Unpauses current song", type = CommandType.Music, aliases = {"unpause"})
 public class ResumeCommand extends Command {
 
     @Override

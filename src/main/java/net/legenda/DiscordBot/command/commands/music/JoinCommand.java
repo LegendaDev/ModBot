@@ -11,7 +11,7 @@ import net.legenda.DiscordBot.exceptions.InvalidCommandStateException;
 
 import java.util.concurrent.TimeUnit;
 
-@CommandInfo(name = "Join", description = "Joins the user's voice channel", type = CommandType.Music, alias = {"connect"})
+@CommandInfo(name = "Join", description = "Joins the user's voice channel", type = CommandType.Music, aliases = {"connect"})
 public class JoinCommand extends Command {
 
     @Override
