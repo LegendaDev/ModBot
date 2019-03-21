@@ -15,11 +15,13 @@ import java.util.*;
 
 public class ConfigManager {
 
+    private String configPath;
     public HashMap<Guild, ArrayList<Preset>> presets = new LinkedHashMap<>();
 
-    public void readData() {
+    public void readData(String configPath) {
+        this.configPath = configPath;
         try {
-            FileReader reader = new FileReader(FileUtils.configFile());
+            FileReader reader = new FileReader(configPath);
             JSONTokener tokener = new JSONTokener(reader);
             JSONObject json = new JSONObject(tokener);
             for (Map.Entry<String, Object> guild : json.toMap().entrySet()) {
@@ -51,7 +53,7 @@ public class ConfigManager {
             json.put(entry.getKey().getId(), jsonArray);
         }
         data.add(json.toString());
-        FileUtils.writeLines(FileUtils.configFile(), data);
+        FileUtils.writeLines(configPath, data);
     }
 
     public String getToken(String path) {

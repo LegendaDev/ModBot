@@ -38,7 +38,6 @@ public enum Main {
                 .setStatus(OnlineStatus.ONLINE)
                 .setAutoReconnect(true)
                 .setAudioEnabled(true)
-                .setGame(Game.of(Game.GameType.STREAMING, "Porn", "https://www.twitch.tv/ninja"))
                 .addEventListener(new MessageManager(), new AntiSpam(), new ModEventsListener());
 
         INSTANCE.jdaBot = builder.build().awaitReady();

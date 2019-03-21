@@ -14,18 +14,13 @@ import java.util.stream.Collectors;
 
 public class FileUtils {
 
-    public static String configFile() {
-        return "D:/GuildConfig/Config.json";
-    }
-
     public static List<String> readLines(String path) {
-        List<String> data = new ArrayList<>();
         try {
-            data.addAll(Files.lines(Paths.get(path)).collect(Collectors.toList()));
+            return Files.lines(Paths.get(path)).collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return data;
+        return null;
     }
 
     public static void writeLines(String path, List<String> data) {
